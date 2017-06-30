@@ -868,7 +868,6 @@ Distortion TEncSearch::xPatternRefinement( TComPattern* pcPatternKey,
   Distortion  uiDistBest  = std::numeric_limits<Distortion>::max();
   UInt        uiDirecBest = 0;
 
-  Pel*  piRefPos;
 #if HUANGFU_20170606
   Int iRefStride = pcPatternKey->pcYuvpred->getStride(COMPONENT_Y);
 #else
@@ -3153,13 +3152,9 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 #if HUANGFU_20170522
 
 				AMVPInfo*  pcAMVPInfo = pcCU->getCUMvField(eRefPicList)->getAMVPInfo();
-
 				UInt       uiPartAddr = 0;
 				Int        iRoiWidth, iRoiHeight;
-
 				pcCU->getPartIndexAndSize(iPartIdx, uiPartAddr, iRoiWidth, iRoiHeight);
-				// Fill the MV Candidates
-
 				pcCU->fillMvpCand(iPartIdx, uiPartAddr, eRefPicList, iRefIdxTemp, pcAMVPInfo);
 				for (int i = 0; i < pcAMVPInfo->iN; i++)
 				{
@@ -4105,12 +4100,6 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 #if HUANGFU_20170522
 			pcMv0pred = cMvPred[0][iRefIdx[0]];
 			pcMvList0 = cMv[0];
-#if HUANGFU_DEBUG
-			if (pcMv0pred.getPos() != pcMvList0.getPos())
-			{
-				assert(0);
-			}
-#endif
 			//pcMvList1 = cMvBi[1];
 			if (!cMv[0].getPos())
 			{
@@ -4806,7 +4795,6 @@ Void TEncSearch::xPatternSearch( const TComPattern* const pcPatternKey,
 	  TComMv temp(x*4,y*4);
 	  temp.setPos(rcMv.getPos());
 	  TComMv*  pcMv1;		//一个CU内部的所有MV的起点指针；即为指向左上角位置的MV。
-	  TComMv*  pcMvP;
 	  Int  xP, yP, nPSW, nPSH;
 	  UInt uiPartAddr;
 	  UInt CUPartAddr = pcPatternKey->pcCU->getZorderIdxInCtu();

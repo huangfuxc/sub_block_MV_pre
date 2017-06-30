@@ -95,18 +95,17 @@
 // ====================================================================================================================
 //huangfu_changed
 #define HUANGFU_M                                          1//change in merge list 
-#define HUANGFU_2017_04_27                                 1//only change skip and all merge candidate list changed
-#define HUANGFU_20170504                                   1//changed all merge mode except skip mode
+#define HUANGFU_2017_04_27                                 1// change skip and merge 
 #define WH                                                 80//the half size of one face
 #define WH_2                                               160//the size of one face
 #define HUANGFU_AMVP                                       1//change in AMVP list
 #define HUANGFU_20170522                                   1//changed the AMVP search method.
 #define HUANGFU_20170601                                   1//for the decoder and encoder matched in merge.
-#define HUANGFU_DEBUG                                      0
 #define HUANGFU_20170606                                   1//search in side
 #define AMVP_MATCH                                         1//for the decoder and encoder matched in AMVP
-#define HF_DEBUG                                           1
+#define HF_DEBUG                                           0
 #define AMVP_DEBUG                                         1//debug foe AMVP
+#define PROJECTION                                         0
 // ====================================================================================================================
 
 
@@ -119,10 +118,6 @@
 #define ZhengRuidi_20170422                               0//set ZhengRuidi_20170422 to 1 means that sub-block motion compensation is only uesd under Merge mode
 // ====================================================================================================================
 
-
-
-
-#define PROJECTION                                        0
 #define AMP_ENC_SPEEDUP                                   1 ///< encoder only speed-up by AMP mode skipping
 #if AMP_ENC_SPEEDUP
 #define AMP_MRG                                           1 ///< encoder only force merge for AMP partition (no motion search for AMP)

@@ -246,8 +246,6 @@ Void TDecEntropy::decodePUWise( TComDataCU* pcCU, UInt uiAbsPartIdx, UInt uiDept
 #if HUANGFU_20170601
 		  if (cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getPos())
 		  {
-
-
 #if HF_DEBUG
 			  cout << endl;
 			  cout << "xuanzhogmerge" << endl<<endl<<endl;
