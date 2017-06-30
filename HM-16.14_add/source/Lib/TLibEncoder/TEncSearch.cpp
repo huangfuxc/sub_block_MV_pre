@@ -316,12 +316,10 @@ __inline Void TEncSearch::xTZSearchHelp( const TComPattern* const pcPatternKey, 
   TComMv temp(iSearchX * 4, iSearchY * 4);
   temp.setPos(rcStruct.position);
   TComMv*  pcMv1;		//一个CU内部的所有MV的起点指针；即为指向左上角位置的MV。
-  TComMv*  pcMvP;
   Int  xP, yP, nPSW, nPSH;
   UInt uiPartAddr;
   UInt CUPartAddr = rcStruct.pcCU->getZorderIdxInCtu();
   pcMv1 = rcStruct.pcCU->getCUMvField(pcPatternKey->eRefPicList)->getMv();//
-  pcMvP = rcStruct.pcCU->getCUMvField(pcPatternKey->eRefPicList)->getMvPred();//
   rcStruct.pcCU->getPartIndexAndSize(pcPatternKey->iPartIdx, uiPartAddr, nPSW, nPSH);
   rcStruct.pcCU->getPartPosition(pcPatternKey->iPartIdx, xP, yP, nPSW, nPSH);//获得当前PU的位置以及左上角的坐标位置。
   PartSize     ePartSize = rcStruct.pcCU->getPartitionSize(0);
@@ -906,12 +904,10 @@ Distortion TEncSearch::xPatternRefinement( TComPattern* pcPatternKey,
 	TComMv temp(cMvTest.getHor() * iFrac, cMvTest.getVer() * iFrac);
 	temp.setPos(rcMvFrac.getPos());
 	TComMv*  pcMv1;		//一个CU内部的所有MV的起点指针；即为指向左上角位置的MV。
-	TComMv*  pcMvP;
 	Int  xP, yP, nPSW, nPSH;
 	UInt uiPartAddr;
 	UInt CUPartAddr = pcPatternKey->pcCU->getZorderIdxInCtu();
 	pcMv1 = pcPatternKey->pcCU->getCUMvField(pcPatternKey->eRefPicList)->getMv();//
-	pcMvP = pcPatternKey->pcCU->getCUMvField(pcPatternKey->eRefPicList)->getMvPred();//
 	pcPatternKey->pcCU->getPartIndexAndSize(pcPatternKey->iPartIdx, uiPartAddr, nPSW, nPSH);
 	pcPatternKey->pcCU->getPartPosition(pcPatternKey->iPartIdx, xP, yP, nPSW, nPSH);//获得当前PU的位置以及左上角的坐标位置。
 	PartSize     ePartSize = pcPatternKey->pcCU->getPartitionSize(0);
@@ -4021,12 +4017,6 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 			pcMv1pred = cMvPredBi[1][iRefIdxBi[1]];
 			pcMvList0 = cMvBi[0];
 			pcMvList1= cMvBi[1];
-#if HUANGFU_DEBUG
-			if (pcMvList1.getPos() != pcMv1pred.getPos() || pcMv0pred.getPos() != pcMvList0.getPos())
-			{
-				assert(0);
-			}
-#endif
 #endif
 			uiLastMode = 2;
 #if HUANGFU_20170522
@@ -4168,12 +4158,6 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 #if HUANGFU_20170522
 			pcMv1pred = cMvPred[1][iRefIdx[1]];
 			pcMvList1 = cMv[1];
-#if HUANGFU_DEBUG
-			if (pcMvList1.getPos() != pcMv1pred.getPos() )
-			{
-				assert(0);
-			}
-#endif
 			if (!cMv[1].getPos())
 			{
 				pcCU->getCUMvField(REF_PIC_LIST_1)->setAllMv(cMv[1], ePartSize, uiPartAddr, 0, iPartIdx);
@@ -4186,12 +4170,9 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 			{
 				pcMv1[uiPartAddr].setPos(cMv[1].getPos());
 				{ 
-				//pcCU->calculateMV(xP, yP, nPSW, nPSH, pcMvP1, uiPartAddr, CUPartAddr, cMvPred[1][iRefIdx[1]]);
 				pcCU->calculateMV(xP, yP, nPSW, nPSH, pcMv1, uiPartAddr, CUPartAddr, cMv[1]);
 				TempMv = cMv[1] - cMvPred[1][iRefIdx[1]];
 				pcCU->getCUMvField(REF_PIC_LIST_1)->setAllMvd(TempMv, ePartSize, uiPartAddr, 0, iPartIdx);
-
-				//pcCU->setAllMv_d(iRefList, nPSW, nPSH, uiPartAddr, CUPartAddr);//1代表设置的是MV，2表示设置的是MVD
 				}
 			}
 			pcCU->getCUMvField(REF_PIC_LIST_1)->setAllRefIdx(iRefIdx[1], ePartSize, uiPartAddr, 0, iPartIdx);
@@ -4259,9 +4240,6 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 
       // find Merge result
       Distortion uiMRGCost = std::numeric_limits<Distortion>::max();
-#if ZhengRuidi_20170422
-	  //pcCU->setMergeFlagSubParts(true, uiPartAddr, iPartIdx, pcCU->getDepth(uiPartAddr));
-#endif
       xMergeEstimation( pcCU, pcOrgYuv, iPartIdx, uiMRGInterDir, cMRGMvField, uiMRGIndex, uiMRGCost, cMvFieldNeighbours, uhInterDirNeighbours, numValidMergeCand);
 
       if ( uiMRGCost < uiMECost )
@@ -4833,7 +4811,6 @@ Void TEncSearch::xPatternSearch( const TComPattern* const pcPatternKey,
 	  UInt uiPartAddr;
 	  UInt CUPartAddr = pcPatternKey->pcCU->getZorderIdxInCtu();
 	  pcMv1 = pcPatternKey->pcCU->getCUMvField(pcPatternKey->eRefPicList)->getMv();//
-	  pcMvP = pcPatternKey->pcCU->getCUMvField(pcPatternKey->eRefPicList)->getMvPred();//
 	  pcPatternKey->pcCU->getPartIndexAndSize(pcPatternKey->iPartIdx, uiPartAddr, nPSW, nPSH);
 	  pcPatternKey->pcCU->getPartPosition(pcPatternKey->iPartIdx, xP, yP, nPSW, nPSH);//获得当前PU的位置以及左上角的坐标位置。
 	  PartSize     ePartSize = pcPatternKey->pcCU->getPartitionSize(0);

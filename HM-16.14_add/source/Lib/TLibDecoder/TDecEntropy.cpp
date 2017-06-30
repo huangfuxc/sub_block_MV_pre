@@ -400,6 +400,11 @@ Void TDecEntropy::decodeMVPIdxPU( TComDataCU* pcSubCU, UInt uiPartAddr, UInt uiD
   CUPartAddr = pcSubCU->getZorderIdxInCtu();//CU 左上角位置在CTU中的Z扫描顺序，可以参考之前setallMV的函数来进行修改。
   if (cMv.getPos())
   {
+
+#if AMVP_DEBUG
+	  cout << endl;
+	  cout << "xuanzhong__" << endl;
+#endif
 	  TComMv*  pcMv;
 	  pcMv = pcSubCU->getCUMvField(eRefList)->getMv();
 	  pcMv[uiPartAddr].setPos(cMv.getPos());//为了使得在运动补偿时可以判断是否划分子块。

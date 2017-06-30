@@ -99,14 +99,14 @@
 #define HUANGFU_20170504                                   1//changed all merge mode except skip mode
 #define WH                                                 80//the half size of one face
 #define WH_2                                               160//the size of one face
-#define HUANGFU_AMVP                                       0//change in AMVP list
+#define HUANGFU_AMVP                                       1//change in AMVP list
 #define HUANGFU_20170522                                   1//changed the AMVP search method.
 #define HUANGFU_20170601                                   1//for the decoder and encoder matched in merge.
-#define HUANGFU_20170606                                   0//DEBUG the outer in mv search and inside of mv search 
 #define HUANGFU_DEBUG                                      0
-#define HUANGFU_20170606                                   0//search in side
-#define AMVP_MATCH                                         0//for the decoder and encoder matched in AMVP
+#define HUANGFU_20170606                                   1//search in side
+#define AMVP_MATCH                                         1//for the decoder and encoder matched in AMVP
 #define HF_DEBUG                                           1
+#define AMVP_DEBUG                                         1//debug foe AMVP
 // ====================================================================================================================
 
 

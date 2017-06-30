@@ -3630,7 +3630,7 @@ Void TComDataCU::fillMvpCand(const UInt partIdx, const UInt partAddr, const RefP
 	while (pInfo->iN < AMVP_MAX_NUM_CANDS)
 	{
 		pInfo->m_acMvCand[pInfo->iN].set(0,0);
-#if HUANGFU_AMVP
+#if HUANGFU_20170601
 		pInfo->m_acMvCand[pInfo->iN].setPos(0);
 #endif
 		pInfo->iN++;
@@ -4052,14 +4052,20 @@ if (neibCU == NULL)return;
 					 {
 						 MV1.setVer(mv_y_re);
 						 MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 						 MV1.setPos(4);
 
+#endif
 					 }
 					 else
 					 {
 						 MV1.setVer(mv_y_re);
 						 MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 						 MV1.setPos(1);
+#endif
 
 					 }
 				 }
@@ -4092,7 +4098,10 @@ if (neibCU == NULL)return;
 					double mv_y_re = mv_y;
 					MV1.setVer(mv_y_re);
 					MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 					MV1.setPos(2);
+#endif
 
 				}
 				 }
@@ -4134,7 +4143,10 @@ if (neibCU == NULL)return;
 			double mv_y_re = mv_y;
 			MV1.setVer(mv_y_re);
 			MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 			MV1.setPos(2);
+#endif
 
 		}
 		else if ((xP + nPSW == 2 * WH&&yP>4 * WH&&yP < 6 * WH) || (xP + nPSW == 8 * WH && yP>2 * WH&&yP < 4 * WH))
@@ -4143,7 +4155,10 @@ if (neibCU == NULL)return;
 			double mv_y_re = mv_y;
 			MV1.setVer(mv_y_re);
 			MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 			MV1.setPos(3);
+#endif
 
 		}
 	}
@@ -4188,7 +4203,10 @@ if (neibCU == NULL)return;
 						 double mv_y_re = mv_y;
 						 MV1.setVer(mv_y_re);
 						 MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 						 MV1.setPos(2);
+#endif
 
 					 }
 					 else if ((!xP&&yP>4 * WH) || (xP % (2 * WH) == 0 && xP&&yP > 2 * WH&&yP < 4 * WH))
@@ -4197,7 +4215,10 @@ if (neibCU == NULL)return;
 						 double mv_y_re = mv_y;
 						 MV1.setVer(mv_y_re);
 						 MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 						 MV1.setPos(1);
+#endif
 
 					 }
 				 }
@@ -4474,13 +4495,19 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 					 {
 						 MV1.setVer(mv_y_re);
 						 MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 						 MV1.setPos(4);
+#endif
 					 }
 					 else
 					 {
 						 MV1.setVer(mv_y_re);
 						 MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 						 MV1.setPos(1);
+#endif
 					 }
 				 }
 				}
@@ -4513,7 +4540,10 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 
 					MV1.setVer(mv_y_re);
 					MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 					MV1.setPos(2);
+#endif
 				}
 				}
 
@@ -4554,7 +4584,10 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 			double mv_y_re = mv_y;
 			MV1.setVer(mv_y_re);
 			MV1.setHor(mv_x_re); 
+#if HF_DEBUG 
+#else
 			MV1.setPos(2);
+#endif
 	
 		}
 		else if ((xP + nPSW == 2 * WH&&yP>4 * WH&&yP < 6 * WH) || (xP + nPSW == 8 * WH && yP>2 * WH&&yP < 4 * WH))
@@ -4563,7 +4596,10 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 			double mv_y_re = mv_y;
 			MV1.setVer(mv_y_re);
 			MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 			MV1.setPos(3);
+#endif
 		}
 	}
 				
@@ -4608,7 +4644,10 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 
 						 MV1.setVer(mv_y_re);
 						 MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 						 MV1.setPos(2);
+#endif
 
 					 }
 					 else if ((!xP&&yP>4 * WH) || (xP % (2 * WH) == 0 && xP&&yP > 2 * WH&&yP < 4 * WH))
@@ -4617,7 +4656,10 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 						 double mv_y_re = mv_y;
 						 MV1.setVer(mv_y_re);
 						 MV1.setHor(mv_x_re);
+#if HF_DEBUG 
+#else
 						 MV1.setPos(1);
+#endif
 
 					 }
 				 }
