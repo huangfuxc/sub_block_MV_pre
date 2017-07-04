@@ -374,7 +374,7 @@ public:
 
   static Void   getMvField                    ( const TComDataCU* pcCU, UInt uiAbsPartIdx, RefPicList eRefPicList, TComMvField& rcMvField );
 
-  Void          fillMvpCand                   ( const UInt uiPartIdx, const UInt uiPartAddr, const RefPicList eRefPicList, const Int iRefIdx, AMVPInfo* pInfo ) const;
+  Void          fillMvpCand                   ( const UInt uiPartIdx, const UInt uiPartAddr, const RefPicList eRefPicList, const Int iRefIdx, AMVPInfo* pInfo )const ;
   Bool          isDiffMER                     ( Int xN, Int yN, Int xP, Int yP ) const;
   Void          getPartPosition               ( UInt partIdx, Int& xP, Int& yP, Int& nPSW, Int& nPSH ) const;
 

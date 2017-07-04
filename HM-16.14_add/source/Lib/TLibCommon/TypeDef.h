@@ -96,8 +96,8 @@
 //huangfu_changed
 #define HUANGFU_M                                          1//change in merge list 
 #define HUANGFU_2017_04_27                                 1// change skip and merge 
-#define WH                                                 80//the half size of one face
-#define WH_2                                               160//the size of one face
+#define WH                                                 64//the half size of one face
+#define WH_2                                               128//the size of one face
 #define HUANGFU_AMVP                                       1//change in AMVP list
 #define HUANGFU_20170522                                   1//changed the AMVP search method.
 #define HUANGFU_20170601                                   1//for the decoder and encoder matched in merge.

@@ -210,7 +210,12 @@ Void TDecEntropy::decodePUWise( TComDataCU* pcCU, UInt uiAbsPartIdx, UInt uiDept
         std::cout << " merge index: " << (UInt)pcCU->getMergeIndex(uiSubPartIdx) << std::endl;
       }
 #endif
+#if HUANGFU_20170601
+	  UInt uiPartAddr, CUPartAddr,CTUAddrs;
+	  CTUAddrs = pcSubCU->getCtuRsAddr();
+	  CUPartAddr = pcSubCU->getZorderIdxInCtu();//CU 左上角位置在CTU中的Z扫描顺序，可以参考之前setallMV的函数来进行修改。
 
+#endif
       const UInt uiMergeIndex = pcCU->getMergeIndex(uiSubPartIdx);
       if ( pcCU->getSlice()->getPPS()->getLog2ParallelMergeLevelMinus2() && ePartSize != SIZE_2Nx2N && pcSubCU->getWidth( 0 ) <= 8 )
       {
@@ -230,12 +235,11 @@ Void TDecEntropy::decodePUWise( TComDataCU* pcCU, UInt uiAbsPartIdx, UInt uiDept
       pcCU->setInterDirSubParts( uhInterDirNeighbours[uiMergeIndex], uiSubPartIdx, uiPartIdx, uiDepth );
 #if HUANGFU_20170601
 	  int xP, yP, nPSW, nPSH;
-	  UInt uiPartAddr, CUPartAddr;
 	  pcSubCU->getPartPosition(uiPartIdx, xP, yP, nPSW, nPSH);//获得当前PU的位置以及左上角的坐标位置。
 	  pcSubCU->getPartIndexAndSize(uiPartIdx, uiPartAddr, nPSW, nPSH);//获取在CTU内部的地址，参数为当前PU的idx;
-	  CUPartAddr = pcSubCU->getZorderIdxInCtu();//CU 左上角位置在CTU中的Z扫描顺序，可以参考之前setallMV的函数来进行修改。
 #endif
       TComMv cTmpMv( 0, 0 );
+
       for ( UInt uiRefListIdx = 0; uiRefListIdx < 2; uiRefListIdx++ )
       {
         if ( pcCU->getSlice()->getNumRefIdx( RefPicList( uiRefListIdx ) ) > 0 )
@@ -243,6 +247,7 @@ Void TDecEntropy::decodePUWise( TComDataCU* pcCU, UInt uiAbsPartIdx, UInt uiDept
           pcCU->setMVPIdxSubParts( 0, RefPicList( uiRefListIdx ), uiSubPartIdx, uiPartIdx, uiDepth);
           pcCU->setMVPNumSubParts( 0, RefPicList( uiRefListIdx ), uiSubPartIdx, uiPartIdx, uiDepth);
           pcCU->getCUMvField( RefPicList( uiRefListIdx ) )->setAllMvd( cTmpMv, ePartSize, uiSubPartIdx, uiDepth, uiPartIdx );
+
 #if HUANGFU_20170601
 		  if (cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getPos())
 		  {
@@ -369,6 +374,9 @@ Void TDecEntropy::decodeMVPIdxPU( TComDataCU* pcSubCU, UInt uiPartAddr, UInt uiD
 
   TComMv cZeroMv( 0, 0 );
   TComMv cMv     = cZeroMv;
+#if AMVP_MATCH
+  TComMv cMvd = cZeroMv;
+#endif
   Int    iRefIdx = -1;
 
   TComCUMvField* pcSubCUMvField = pcSubCU->getCUMvField( eRefList );
@@ -388,26 +396,81 @@ Void TDecEntropy::decodeMVPIdxPU( TComDataCU* pcSubCU, UInt uiPartAddr, UInt uiD
   {
     m_pcPrediction->getMvPredAMVP( pcSubCU, uiPartIdx, uiPartAddr, eRefList, cMv);
     cMv += pcSubCUMvField->getMvd( uiPartAddr );
+#if AMVP_MATCH
+	cMvd = pcSubCUMvField->getMvd(uiPartAddr);
+#endif
   }
 
   PartSize ePartSize = pcSubCU->getPartitionSize( uiPartAddr );
 #if AMVP_MATCH
-  int xP, yP, nPSW, nPSH;
-  UInt CUPartAddr;
-  pcSubCU->getPartPosition(0, xP, yP, nPSW, nPSH);//获得当前PU的位置以及左上角的坐标位置。
-  CUPartAddr = pcSubCU->getZorderIdxInCtu();//CU 左上角位置在CTU中的Z扫描顺序，可以参考之前setallMV的函数来进行修改。
+ 
+#if AMVP_DEBUG
+ // int xP, yP, nPSW, nPSH;
+ // UInt CUPartAddr;
+ // pcSubCU->getPartPosition(uiPartIdx, xP, yP, nPSW, nPSH);//获得当前PU的位置以及左上角的坐标位置。
+ // CUPartAddr = pcSubCU->getZorderIdxInCtu();//CU 左上角位置在CTU中的Z扫描顺序，可以参考之前setallMV的函数来进行修改。
+ // if (pcSubCU->getSlice()->getPOC() ==5)
+ // {
+	// if (cMvd.getHor() == 1 && cMvd.getVer() == -5)
+	//	  cout << " xP: " << xP << " yP: " << yP << " nPSW: " << nPSW << " nPSH: " << nPSH << endl;
+	//if (xP == 128 && yP == 132 && nPSW == 8 && nPSH == 4)
+	//  {
+	//	  cout << " eRefList:  " << eRefList << endl;
+	//	  cout << "MVP: " << iMVPIdx << endl;
+	//	  for (int i = 0; i < pAMVPInfo->iN; i++)
+	//	  {
+	//		  cout << "AMVP: " << i << ":  " << pAMVPInfo->m_acMvCand[i].getHor() << " " << pAMVPInfo->m_acMvCand[i].getVer() << " " << pAMVPInfo->m_acMvCand[i].getPos()<< endl;
+	//	  }
+	//	  cout << "cMv:" << cMv.getHor() << "  " << cMv.getVer() << "  " << cMv.getPos() << endl;
+	//  }
+ // }
+#endif
   if (cMv.getPos())
   {
 
 #if AMVP_DEBUG
 	  cout << endl;
-	  cout << "xuanzhong__" << endl;
+	  cout << "xuanzhong__" << "  pos:  " << cMv.getPos() <<"  mvx: "<<cMv.getHor()<<"   mvy: "<<cMv.getVer()<< endl;
 #endif
+	  int xP, yP, nPSW, nPSH;
+	  UInt CUPartAddr;
+	  pcSubCU->getPartPosition(uiPartIdx, xP, yP, nPSW, nPSH);//获得当前PU的位置以及左上角的坐标位置。
+	  CUPartAddr = pcSubCU->getZorderIdxInCtu();//CU 左上角位置在CTU中的Z扫描顺序，可以参考之前setallMV的函数来进行修改。
+	  //if (pcSubCU->getSlice()->getPOC() == 5)
+	  //{
+		 // if (xP == 128 && yP == 132 && nPSW == 8 && nPSH == 4)
+		 // {
+			//
+			// cout<<"REFPOC:  "<< pcSubCU->getSlice()->getRefPOC(REF_PIC_LIST_0, pcSubCU->getCUMvField(REF_PIC_LIST_0)->getRefIdx(g_auiRasterToZscan[0]))<<endl;
+			//  cout << "MVP: " << iMVPIdx << endl;
+			//  cout << " eRefList:  " << eRefList << endl;
+			//  for (int i = 0; i < pAMVPInfo->iN; i++)
+			//  {
+			//	  cout << "AMVP: " << i << ":  " << pAMVPInfo->m_acMvCand[i].getHor() << " " << pAMVPInfo->m_acMvCand[i].getVer() << endl;
+			//  }
+			//  cout << "cMv:" << cMv.getHor() << "  " << cMv.getVer() << "  " << cMv.getPos() << endl;
+		 // }
+	  //}
 	  TComMv*  pcMv;
 	  pcMv = pcSubCU->getCUMvField(eRefList)->getMv();
 	  pcMv[uiPartAddr].setPos(cMv.getPos());//为了使得在运动补偿时可以判断是否划分子块。
 
 	  pcSubCU->calculateMV(xP, yP, nPSW, nPSH, pcMv, uiPartAddr, CUPartAddr, cMv);
+	 /* if (pcSubCU->getSlice()->getPOC() ==5)
+	  {
+		  if (xP == 128 && yP == 132 && nPSW == 8 && nPSH == 4)
+		  {
+			  cout << "MVP: " << iMVPIdx << endl;
+			  cout << " eRefList:  " << eRefList << endl;
+			  for (int i = 0; i < pAMVPInfo->iN; i++)
+			  {
+				  cout << "AMVP: " << i << ":  " << pAMVPInfo->m_acMvCand[i].getHor() << " " << pAMVPInfo->m_acMvCand[i].getVer() << "pos:  " << pAMVPInfo->m_acMvCand[i] .getPos()<< endl;
+			  }
+			  cout << "pcMv[uiPartAddr]:" << pcMv[uiPartAddr].getHor() << "  " << pcMv[uiPartAddr].getVer() << "  " << pcMv[uiPartAddr].getPos() << endl;
+
+
+		  }
+	  }*/
   }
   else
 	  pcSubCU->getCUMvField( eRefList )->setAllMv(cMv, ePartSize, uiPartAddr, 0, uiPartIdx);

@@ -709,13 +709,23 @@ Void TComDataCU::calculateMV(Int xP, Int yP, Int nPSW, Int nPSH, TComMv*  pcMv, 
 			{
 				double x = (2 + 4 * j) << 2;
 				double y = (yP%WH - ((yP / WH + 1) % 2)*WH + 2 + 4 * i) << 2;
-				double mvx, mvy;
+				double mvx, mvy,mvx1,mvy1;
 				mvy = Mv.getVer();
 				mvx = Mv.getHor();
-				mvx = WH*(WH*x + WH*mvx - mvx*x) / (WH*WH + WH*mvx - mvx*x) - x;
-				mvy = WH*(WH*y + WH*mvy - mvy*x) / (WH*WH + WH*mvx - mvx*x) - y;
-				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setHor(mvx);
-				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setVer(mvy);
+				mvx1 = WH*(WH*x + WH*mvx - mvx*x) / (WH*WH + WH*mvx - mvx*x) - x;
+				mvy1 = WH*(WH*y + WH*mvy - mvy*x) / (WH*WH + WH*mvx - mvx*x) - y;
+				if (mvx1)
+				{
+					if (mvx1>0)mvx1 += 0.5;
+					else mvx1 -= 0.5;
+				}
+				if (mvy1)
+				{
+					if (mvy1>0)mvy1 += 0.5;
+					else mvy1 -= 0.5;
+				}
+				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setHor(mvx1);
+				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setVer(mvy1);
 			}
 		}		
 		break;
@@ -726,13 +736,23 @@ Void TComDataCU::calculateMV(Int xP, Int yP, Int nPSW, Int nPSH, TComMv*  pcMv, 
 			{
 				double x = (xP%WH - ((xP / WH + 1) % 2)*WH + 2 + 4 * j) << 2;
 				double y = (2 + 4 * i) << 2;
-				double mvx, mvy;
+				double mvx, mvy, mvx1, mvy1;
 				mvy = Mv.getVer();
 				mvx = Mv.getHor();
-				mvx = WH*(WH*x + WH*mvx - mvx*y) / (WH*WH + WH*mvy - mvy*y) - x;
-				mvy = WH*(WH*y + WH*mvy - mvy*y) / (WH*WH + WH*mvy - mvy*y) - y;
-				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setHor(mvx);
-				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setVer(mvy);
+				mvx1 = WH*(WH*x + WH*mvx - mvx*y) / (WH*WH + WH*mvy - mvy*y) - x;
+				mvy1 = WH*(WH*y + WH*mvy - mvy*y) / (WH*WH + WH*mvy - mvy*y) - y;
+				if (mvx1)
+				{
+					if (mvx1>0)mvx1 += 0.5;
+					else mvx1 -= 0.5;
+				}
+				if (mvy1)
+				{
+					if (mvy1>0)mvy1 += 0.5;
+					else mvy1 -= 0.5;
+				}
+				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setHor(mvx1);
+				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setVer(mvy1);
 			}
 		}
 		break;
@@ -743,13 +763,23 @@ Void TComDataCU::calculateMV(Int xP, Int yP, Int nPSW, Int nPSH, TComMv*  pcMv, 
 			{
 				double x = (-nPSW + 2 + 4 * j)*4.0;
 				double y = (yP%WH - ((yP / WH + 1) % 2)*WH + 2 + 4 * i) << 2;
-				double mvx, mvy;
+				double mvx, mvy, mvx1, mvy1;
 				mvy = Mv.getVer();
 				mvx = Mv.getHor();
-				mvx = WH*(WH*x + WH*mvx + mvx*x) / (WH*WH - WH*mvx - mvx*x) - x;
-				mvy = WH*(WH*y + WH*mvy + mvy*x) / (WH*WH - WH*mvx - mvx*x) - y;
-				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setHor(mvx);
-				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setVer(mvy);
+				mvx1 = WH*(WH*x + WH*mvx + mvx*x) / (WH*WH - WH*mvx - mvx*x) - x;
+				mvy1 = WH*(WH*y + WH*mvy + mvy*x) / (WH*WH - WH*mvx - mvx*x) - y;
+				if (mvx1)
+				{
+					if (mvx1>0)mvx1 += 0.5;
+					else mvx1 -= 0.5;
+				}
+				if (mvy1)
+				{
+					if (mvy1>0)mvy1 += 0.5;
+					else mvy1 -= 0.5;
+				}
+				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setHor(mvx1);
+				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setVer(mvy1);
 			}
 		}
 		break;
@@ -760,13 +790,23 @@ Void TComDataCU::calculateMV(Int xP, Int yP, Int nPSW, Int nPSH, TComMv*  pcMv, 
 			{
 				double x = (xP%WH - ((xP / WH + 1) % 2)*WH + 2 + 4 * j) << 2;
 				double y = (-nPSH+2 + 4 * i) *4.0;
-				double mvx, mvy;
+				double mvx, mvy, mvx1, mvy1;
 				mvy = Mv.getVer();
 				mvx = Mv.getHor();
-				mvx = WH*(WH*x + WH*mvx + mvx*y) / (WH*WH - WH*mvy - mvy*y) - x;
-				mvy = WH*(WH*y + WH*mvy+ mvy*y) / (WH*WH - WH*mvy - mvy*y) - y;
-				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setHor(mvx);
-				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setVer(mvy);
+				mvx1 = WH*(WH*x + WH*mvx + mvx*y) / (WH*WH - WH*mvy - mvy*y) - x;
+				mvy1 = WH*(WH*y + WH*mvy+ mvy*y) / (WH*WH - WH*mvy - mvy*y) - y;
+				if (mvx1)
+				{
+					if (mvx1>0)mvx1 += 0.5;
+					else mvx1 -= 0.5;
+				}
+				if (mvy1)
+				{
+					if (mvy1>0)mvy1 += 0.5;
+					else mvy1 -= 0.5;
+				}
+				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setHor(mvx1);
+				pcMv[g_auiRasterToZscan[g_auiZscanToRaster[ruiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].setVer(mvy1);
 			}
 		}
 		break;
@@ -2255,7 +2295,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
 
 #if  HUANGFU_M
 
-  if (!xP && yP >= (4 * WH))
+  if (!xP && yP >= (4 * WH)&&yP<6*WH)
   {
 	  int position;
 	  position = (8 * WH)*(4 * WH - 64) / (64 * 64) + (8 * WH - (yP + nPSH - 1) % (2 * WH) - 1) / 64;
@@ -2286,7 +2326,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
     }
 
 #if HUANGFU_M
-	if ((xP % (2 * WH) == 0 && xP && yP >= 2 * WH&&yP<4 * WH) || (!xP&&yP >= 4 * WH))
+	if ((xP % (2 * WH) == 0&&xP<8*WH && xP && yP >= 2 * WH&&yP<4 * WH) || (!xP&&yP >= 4 * WH&&yP<6*WH))
 	{
 #if  HUANGFU_2017_04_27  
 		 Left_sameface = 1;	
@@ -2294,7 +2334,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
 		TComMv MV1 = pcMvFieldNeighbours[iCount << 1].getMv();
 		int mv_x = MV1.getHor();
 		int mv_y = MV1.getVer();
-		if (yP >= 4 * WH)
+		if (yP >= 4 * WH&&yP<6*WH)
 		{
 			int temp = mv_x;
 			mv_x = mv_y;
@@ -2317,7 +2357,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
 			MV1 = pcMvFieldNeighbours[(iCount << 1) + 1].getMv();
 			mv_x = MV1.getHor();
 			mv_y = MV1.getVer();
-			if (yP >= 4 * WH)
+			if (yP >= 4 * WH&&yP<6 * WH)
 			{
 				int temp = mv_x;
 				mv_x = mv_y;
@@ -2360,7 +2400,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
                        !( uiPUIdx == 1 && (cCurPS == SIZE_2NxN || cCurPS == SIZE_2NxnU || cCurPS == SIZE_2NxnD) ) &&
                        pcCUAbove->isInter( uiAbovePartIdx );
 #if HUANGFU_M
-  if (yP == 2 * WH)
+  if (yP == 2 * WH&&xP<8*WH)
   {
 	  if (xP >= 2 * WH&&xP<4 * WH)
 	  {
@@ -2411,7 +2451,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
 #endif
     }
 #if HUANGFU_M
-	if (yP == 2 * WH || (xP<2 * WH&&yP == 4 * WH))
+	if ((yP == 2 * WH&&xP<8*WH )|| (xP<2 * WH&&yP == 4 * WH))
 	{
 #if  HUANGFU_2017_04_27  	
 		 Above_sameface = 1;	
@@ -2514,7 +2554,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
                        pcCUAboveRight->isDiffMER(xP+nPSW, yP-1, xP, yP) &&
                        pcCUAboveRight->isInter( uiAboveRightPartIdx );
 #if HUANGFU_M
-  if ((yP == 2 * WH) || (xP + nPSW == 8 * WH&&yP>2 * WH&&yP<4 * WH) || (xP + nPSW == 2 * WH&&yP>4 * WH&&yP<6 * WH))
+  if ((yP == 2 * WH&&xP<8*WH) || (xP + nPSW == 8 * WH&&yP>2 * WH&&yP<4 * WH) || (xP + nPSW == 2 * WH&&yP>4 * WH&&yP<6 * WH))
   {
 #if  HUANGFU_2017_04_27  
 	
@@ -2581,7 +2621,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
 #endif
     }
 #if HUANGFU_M
-	if ((yP >= 2 * WH&&yP<4 * WH) || (xP<2 * WH&&yP >= 4 * WH))
+	if ((yP >= 2 * WH&&yP<4 * WH&&xP<8*WH) || (xP<2 * WH&&yP >= 4 * WH&&yP<6*WH))
 	{
 		TComMv MV1 = pcMvFieldNeighbours[iCount << 1].getMv();
 		int mv_x = MV1.getHor();
@@ -2721,7 +2761,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
                        pcCULeftBottom->isDiffMER(xP-1, yP+nPSH, xP, yP) &&
                        pcCULeftBottom->isInter( uiLeftBottomPartIdx ) ;
 #if  HUANGFU_M
-  if (!xP && yP >= (4 * WH))
+  if (!xP && yP >= (4 * WH)&&yP<6*WH)
   {
 	  int position;
 	  position = (8 * WH)*(4 * WH - 64) / (64 * 64) + (8 * WH - (yP + nPSH) % (2 * WH) - 1) / 64;
@@ -2743,7 +2783,10 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
   }
 #endif
 #if HUANGFU_2017_04_27
-  if (isAvailableA0 && (!isAvailableA1 || Left_sameface || (!pcCULeft->hasEqualMotion(uiLeftPartIdx, pcCULeftBottom, uiLeftBottomPartIdx) )))
+  Bool equal = true;
+  if (isAvailableA1&&pcCULeftBottom)
+	  equal = !pcCULeft->hasEqualMotion(uiLeftPartIdx, pcCULeftBottom, uiLeftBottomPartIdx);
+  if (isAvailableA0 && (!isAvailableA1 || Left_sameface || equal))
 
 #else
   if (isAvailableA0 && (!isAvailableA1 ||  !pcCULeft->hasEqualMotion(uiLeftPartIdx, pcCULeftBottom, uiLeftBottomPartIdx) ))
@@ -2755,6 +2798,8 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
 	  // get Mv from Left
 	  TComDataCU::getMvField(pcCULeftBottom, uiLeftBottomPartIdx, REF_PIC_LIST_0, pcMvFieldNeighbours[iCount << 1]);
 #if HUANGFU_20170601
+
+	  int count___ = 0;
 	  pcMvFieldNeighbours[(iCount << 1) ].getMv().setPos(0);
 #endif
 	  if (getSlice()->isInterB())
@@ -2765,7 +2810,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
 #endif
 	  }
 #if HUANGFU_M
-	  if ((xP % (2 * WH) == 0 && yP >= 2 * WH&&yP < 4 * WH&&xP) || (!xP && yP + nPSH < 6 * WH&&yP >= 4 * WH) || (yP + nPSH == 6 * WH&&xP < 2 * WH&&xP))
+	  if ((xP % (2 * WH) == 0 && yP >= 2 * WH&&yP < 4 * WH&&xP&&xP<8*WH) || (!xP && yP + nPSH < 6 * WH&&yP >= 4 * WH) || (yP + nPSH == 6 * WH&&xP < 2 * WH&&xP))
 	  {
 #if  HUANGFU_2017_04_27  
 		 
@@ -2882,7 +2927,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
                          pcCUAboveLeft->isInter( uiAboveLeftPartIdx );
 #if HUANGFU_M
 
-	if ((yP == 2 * WH&&xP < 8 * WH&&xP > 2 * WH) || (!xP && yP > 4 * WH))
+	if ((yP == 2 * WH&&xP < 8 * WH&&xP > 2 * WH) || (!xP && yP > 4 * WH&&yP<6*WH))
 	{
 		if (xP > 2 * WH&&xP<4 * WH&&yP == 2 * WH)
 		{
@@ -2942,7 +2987,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
 #endif
       }
 #if HUANGFU_M
-	  if ((yP == 2 * WH&&xP) || (yP == 4 * WH&&xP < 2 * WH&&xP) ||( xP  % (2 * WH) == 0&&xP && yP>2 * WH&&yP<4 * WH) || (!xP && yP >= 4 * WH))
+	  if ((yP == 2 * WH&&xP&&xP<8*WH) || (yP == 4 * WH&&xP < 2 * WH&&xP) ||( xP  % (2 * WH) == 0&&xP &&xP<8*WH&& yP>2 * WH&&yP<4 * WH) || (!xP && yP >= 4 * WH&&yP<6*WH))
 
 	  //if ((yP == 2 * WH&&xP) || (yP == 4 * WH&&xP<2 * WH&&xP) || (xP == 0 && yP >= 4 * WH))
 	  {
@@ -3334,7 +3379,7 @@ Void TComDataCU::getPartPosition( UInt partIdx, Int& xP, Int& yP, Int& nPSW, Int
  * \param iRefIdx
  * \param pInfo
  */
-Void TComDataCU::fillMvpCand(const UInt partIdx, const UInt partAddr, const RefPicList eRefPicList, const Int refIdx, AMVPInfo* pInfo) const
+Void TComDataCU::fillMvpCand(const UInt partIdx, const UInt partAddr, const RefPicList eRefPicList, const Int refIdx, AMVPInfo* pInfo)const
 {
 	pInfo->iN = 0;
 	if (refIdx < 0)
@@ -3343,7 +3388,9 @@ Void TComDataCU::fillMvpCand(const UInt partIdx, const UInt partAddr, const RefP
 	}
 #if HUANGFU_AMVP
 	int xP, yP, nPSW, nPSH;
+
 	this->getPartPosition(partIdx, xP, yP, nPSW, nPSH);
+
 #endif
 	//-- Get Spatial MV
 	UInt partIdxLT, partIdxRT, partIdxLB;
@@ -3365,7 +3412,7 @@ Void TComDataCU::fillMvpCand(const UInt partIdx, const UInt partAddr, const RefP
 	{
 		UInt idx_;
 		const TComDataCU* tempCU = NULL;
-		if ((!xP && yP >= (4 * WH)) || (yP + nPSH == 6 * WH&&xP<2 * WH&&xP))
+		if ((!xP && yP >= (4 * WH)&&yP<6*WH) || (yP + nPSH == 6 * WH&&xP<2 * WH&&xP))
 		{
 
 			if (yP + nPSH == 6 * WH&&xP<2 * WH&&xP)
@@ -3380,7 +3427,7 @@ Void TComDataCU::fillMvpCand(const UInt partIdx, const UInt partAddr, const RefP
 
 			}
 			
-			else if (!xP && yP >= 4 * WH)
+			else if (!xP && yP >= 4 * WH&&yP<6*WH)
 			{
 				int position;
 				position = (8 * WH)*(4 * WH - 64) / (64 * 64) + (8 * WH - (yP + nPSH-1) % (2 * WH) - 1) / 64;
@@ -3393,7 +3440,7 @@ Void TComDataCU::fillMvpCand(const UInt partIdx, const UInt partAddr, const RefP
 		}
 		if (!isScaledFlagLX)
 		{
-			if (!xP && yP >= (4 * WH))
+			if (!xP && yP >= (4 * WH)&&yP<6*WH)
 			{
 				int position;
 				position = (8 * WH)*(4 * WH - 64) / (64 * 64) + (8 * WH - (yP + nPSH) % (2 * WH) - 1) / 64;
@@ -3408,7 +3455,7 @@ Void TComDataCU::fillMvpCand(const UInt partIdx, const UInt partAddr, const RefP
 
 #if HUANGFU_AMVP
 	// Left predictor search
-	if ((!xP&&yP >= 4 * WH) || (xP % (2 * WH) == 0 && xP && yP >= 2 * WH&&yP < 4 * WH) || (yP+nPSH==6*WH&&xP<2*WH&&xP))
+	if ((!xP&&yP >= 4 * WH&&yP<6*WH) || (xP % (2 * WH) == 0 &&xP<8*WH&& xP && yP >= 2 * WH&&yP < 4 * WH) || (yP+nPSH==6*WH&&xP<2*WH&&xP))
 	{
 		Bool Added = false;
 		if (isScaledFlagLX)
@@ -3473,7 +3520,7 @@ Void TComDataCU::fillMvpCand(const UInt partIdx, const UInt partAddr, const RefP
 
 #if HUANGFU_AMVP
 
-	if (yP == 2 * WH || (yP == 4 * WH&&xP < 2 * WH&&xP) || (!xP&&yP >= 4 * WH) || (xP + nPSW == 2 * WH&&yP >= 4 * WH) || (xP + nPSW == 8 * WH&&yP > 2 * WH&&yP<4*WH))
+	if ((yP == 2 * WH&&xP<8 * WH) || (yP == 4 * WH&&xP < 2 * WH&&xP) || (!xP&&yP >= 4 * WH&&yP<6 * WH) || (xP + nPSW == 2 * WH&&yP >= 4 * WH&&yP<6 * WH) || (xP + nPSW == 8 * WH&&yP > 2 * WH&&yP<4 * WH))
 	{
 		Bool Added = false;
 		xAddMVPCandUnscaled_HF(*pInfo, eRefPicList, refIdx, partIdxRT, Added, xP, yP, nPSW, nPSH, MD_ABOVE_RIGHT);
@@ -3503,7 +3550,7 @@ Void TComDataCU::fillMvpCand(const UInt partIdx, const UInt partAddr, const RefP
 
 	if (!isScaledFlagLX)
 	{
-		if (yP == 2 * WH || (yP == 4 * WH&&xP < 2 * WH&&xP) || (!xP&&yP >= 4 * WH) || (xP + nPSW == 2 * WH&&yP >= 4 * WH) || (xP + nPSW == 8 * WH&&yP > 2 * WH&&yP<4 * WH))
+		if ((yP == 2 * WH&&xP<8 * WH) || (yP == 4 * WH&&xP < 2 * WH&&xP) || (!xP&&yP >= 4 * WH&&yP<6 * WH) || (xP + nPSW == 2 * WH&&yP >= 4 * WH&&yP<6 * WH) || (xP + nPSW == 8 * WH&&yP > 2 * WH&&yP<4 * WH))
 		{
 			Bool Added = false;
 			xAddMVPCandWithScaling_HF(*pInfo, eRefPicList, refIdx, partIdxRT, Added, xP, yP, nPSW, nPSH, MD_ABOVE_RIGHT);
@@ -3815,7 +3862,7 @@ void  TComDataCU::xAddMVPCandUnscaled_HF(AMVPInfo &info, const RefPicList eRefPi
  {
 	 case MD_LEFT:
 	 {
-		 if (!xP && yP >= (4 * WH))
+		 if (!xP && yP >= (4 * WH)&&yP<6*WH)
 		 {
 			 int position;
 			 position = (8 * WH)*(4 * WH - 64) / (64 * 64) + (8 * WH - (yP + nPSH - 1) % (2 * WH) - 1) / 64;
@@ -3834,7 +3881,7 @@ void  TComDataCU::xAddMVPCandUnscaled_HF(AMVPInfo &info, const RefPicList eRefPi
 	 }
 	 case MD_ABOVE:
 	 {
-		 if (yP == 2 * WH)
+		 if (yP == 2 * WH&&xP<8*WH)
 		 {
 			 if (xP >= 2 * WH&&xP<4 * WH)
 			 {
@@ -3876,7 +3923,7 @@ void  TComDataCU::xAddMVPCandUnscaled_HF(AMVPInfo &info, const RefPicList eRefPi
 	 }
 	 case MD_ABOVE_RIGHT:
 	 {
-		 if ((yP == 2 * WH) || (xP + nPSW == 8 * WH&&yP>2 * WH&&yP<4 * WH) || (xP + nPSW == 2 * WH&&yP>=4 * WH&&yP<6 * WH))
+		 if ((yP == 2 * WH&&xP<8*WH) || (xP + nPSW == 8 * WH&&yP>2 * WH&&yP<4 * WH) || (xP + nPSW == 2 * WH&&yP>=4 * WH&&yP<6 * WH))
 		 {
 			 if (xP >= 2 * WH&&xP<4 * WH&&yP == 2 * WH)
 			 {
@@ -3933,7 +3980,7 @@ void  TComDataCU::xAddMVPCandUnscaled_HF(AMVPInfo &info, const RefPicList eRefPi
 	 }
 	 case MD_BELOW_LEFT:
 	 {
-		 if (!xP && yP >= 4 * WH )
+		 if (!xP && yP >= 4 * WH &&yP<6*WH)
 		 {
 			 int position;
 			 position = (8 * WH)*(4 * WH - 64) / (64 * 64) + (8 * WH - (yP + nPSH) % (2 * WH) - 1) / 64;
@@ -3962,7 +4009,7 @@ void  TComDataCU::xAddMVPCandUnscaled_HF(AMVPInfo &info, const RefPicList eRefPi
 	 }
 	 case MD_ABOVE_LEFT:
 	 {
-		 if ((yP == 2 * WH&&xP < 8 * WH&&xP >= 2 * WH) || (!xP && yP >= 4 * WH))
+		 if ((yP == 2 * WH&&xP < 8 * WH&&xP >= 2 * WH) || (!xP &&yP<6*WH&& yP >= 4 * WH))
 		 {
 			 if (xP >= 2 * WH&&xP<4 * WH&&yP == 2 * WH)
 			 {
@@ -4027,11 +4074,11 @@ if (neibCU == NULL)return;
 			 MV1.setPos(0);
 
 
-			 if (((xP % (2 * WH) == 0 && xP && yP >= 2 * WH&&yP < 4 * WH) || (yP + nPSH == 6 * WH&&xP < 2 * WH&&xP) || (!xP&&yP >= 4 * WH)) && (eDir == MD_LEFT || eDir == MD_BELOW_LEFT))
+			 if (((xP % (2 * WH) == 0 && xP &&xP<8*WH&& yP >= 2 * WH&&yP < 4 * WH) || (yP + nPSH == 6 * WH&&xP < 2 * WH&&xP) || (!xP&&yP >= 4 * WH&&yP<6*WH)) && (eDir == MD_LEFT || eDir == MD_BELOW_LEFT))
 			 {
 				 int mv_x = MV1.getHor();
 				 int mv_y = MV1.getVer();
-				 if (yP >= 4 * WH)
+				 if (yP >= 4 * WH&&yP<6 * WH)
 				 {
 					 int temp = mv_x;
 					 mv_x = mv_y;
@@ -4069,8 +4116,9 @@ if (neibCU == NULL)return;
 
 					 }
 				 }
-			 }				
-			 if ((yP == 2 * WH || (xP<2 * WH&&yP == 4 * WH)) && eDir == MD_ABOVE)
+			 }		
+			 //(yP == 2 * WH&&xP<8 * WH) || (xP < 2 * WH&&yP == 4 * WH)
+		if (((yP == 2 * WH&&xP<8 * WH) || (xP<2 * WH&&yP == 4 * WH)) && eDir == MD_ABOVE)
 			 {
 				 int mv_x = MV1.getHor();
 				 int mv_y = MV1.getVer();
@@ -4106,7 +4154,7 @@ if (neibCU == NULL)return;
 				}
 				 }
 
-			 if (((yP >= 2 * WH&&yP < 4 * WH) || (xP + nPSW==2 * WH&&yP >= 4 * WH)) && eDir == MD_ABOVE_RIGHT)
+			 if (((yP >= 2 * WH&&yP < 4 * WH&&xP<8*WH) || (xP + nPSW==2 * WH&&yP >= 4 * WH&&yP<6*WH)) && eDir == MD_ABOVE_RIGHT)
 		{
 				 int mv_x = MV1.getHor();
 				 int mv_y = MV1.getVer();
@@ -4166,7 +4214,7 @@ if (neibCU == NULL)return;
 		 }
 
 			
-			 if (((yP == 2 * WH&&xP) || (yP == 4 * WH&&xP < 2 * WH&&xP) ||(xP%(2*WH)==0&&xP&&yP>2*WH&&yP<4*WH)|| (!xP && yP >= 4 * WH)) && eDir == MD_ABOVE_LEFT)
+			 if (((yP == 2 * WH&&xP&&xP<8*WH) || (yP == 4 * WH&&xP < 2 * WH&&xP) ||(xP%(2*WH)==0&&xP&&yP>2*WH&&yP<4*WH&&xP<8*WH)|| (!xP && yP >= 4 * WH&&yP<6*WH)) && eDir == MD_ABOVE_LEFT)
 			 {
 				 int mv_x = MV1.getHor();
 				 int mv_y = MV1.getVer();
@@ -4247,7 +4295,7 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 	 {
 	 case MD_LEFT:
 	 {
-		 if (!xP && yP >= (4 * WH))
+		 if (!xP &&yP<(6 * WH) && yP >= (4 * WH))
 		 {
 			 int position;
 			 position = (8 * WH)*(4 * WH - 64) / (64 * 64) + (8 * WH - (yP + nPSH - 1) % (2 * WH) - 1) / 64;
@@ -4266,7 +4314,7 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 	 }
 	 case MD_ABOVE:
 	 {
-		 if (yP == 2 * WH)
+		 if (yP == 2 * WH&&xP<8*WH)
 		 {
 			 if (xP >= 2 * WH&&xP<4 * WH)
 			 {
@@ -4308,7 +4356,7 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 	 }
 	 case MD_ABOVE_RIGHT:
 	 {
-		 if ((yP == 2 * WH) || (xP + nPSW == 8 * WH&&yP>2 * WH&&yP<4 * WH) || (xP + nPSW == 2 * WH&&yP>=4 * WH&&yP<6 * WH))
+		 if ((yP == 2 * WH&&xP<8*WH) || (xP + nPSW == 8 * WH&&yP>2 * WH&&yP<4 * WH) || (xP + nPSW == 2 * WH&&yP>=4 * WH&&yP<6 * WH))
 		 {
 			 if (xP >= 2 * WH&&xP<4 * WH&&yP == 2 * WH)
 			 {
@@ -4365,7 +4413,7 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 	 }
 	 case MD_BELOW_LEFT:
 	 {
-		 if (!xP && yP >= 4 * WH )
+		 if (!xP && yP >= 4 * WH &&yP<6*WH)
 		 {
 			 int position;
 			 position = (8 * WH)*(4 * WH - 64) / (64 * 64) + (8 * WH - (yP + nPSH) % (2 * WH) - 1) / 64;
@@ -4394,7 +4442,7 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 	 }
 	 case MD_ABOVE_LEFT:
 	 {
-		 if ((yP == 2 * WH&&xP < 8 * WH&&xP >= 2 * WH) || (!xP && yP >= 4 * WH))
+		 if ((yP == 2 * WH&&xP < 8 * WH&&xP >= 2 * WH) || (!xP && yP >= 4 * WH&&yP<6*WH))
 		 {
 			 if (xP >= 2 * WH&&xP<4 * WH&&yP == 2 * WH)
 			 {
@@ -4417,7 +4465,7 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 				 neibCU = m_pcPic->getCtu(position);
 				 neibPUPartIdx = g_auiRasterToZscan[(((xP - 1) % (2 * WH)) % 64) / 4 * 16];
 			 }
-			 else if ((!xP && yP >= 4 * WH))
+			 else if ((!xP && yP<6 * WH&&yP >= 4 * WH))
 			 {
 				 int position;
 				 position = (8 * WH)*(4 * WH - 64) / (64 * 64) + (8 * WH - yP%(2 * WH) - 1) / 64;
@@ -4470,11 +4518,11 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 				MV1 = neibCU->getCUMvField(eRefPicListIndex)->getMv(neibPUPartIdx);
 
 				MV1.setPos(0);
-				if (((xP % (2 * WH) == 0 && xP && yP >= 2 * WH&&yP < 4 * WH) || (yP + nPSH == 6 * WH&&xP < 2 * WH&&xP) || (!xP&&yP >= 4 * WH)) && (eDir == MD_LEFT || eDir == MD_BELOW_LEFT))
+				if (((xP % (2 * WH) == 0 && xP &&xP<8 * WH&& yP >= 2 * WH&&yP < 4 * WH) || (yP + nPSH == 6 * WH&&xP < 2 * WH&&xP) || (!xP&&yP >= 4 * WH&&yP<6 * WH)) && (eDir == MD_LEFT || eDir == MD_BELOW_LEFT))
 				{
 					int mv_x = MV1.getHor();
 					int mv_y = MV1.getVer();
-					if (yP >= 4 * WH)
+					if (yP >= 4 * WH&&yP<6 * WH)
 					{
 						int temp = mv_x;
 						mv_x = mv_y;
@@ -4511,7 +4559,7 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 					 }
 				 }
 				}
-				if ((yP == 2 * WH || (xP + nPSW == 2 * WH&&yP == 4 * WH)) && eDir == MD_ABOVE)
+				if (((yP == 2 * WH&&xP<8*WH) || (xP < 2 * WH&&yP == 4 * WH)) && eDir == MD_ABOVE)
 				{
 					int mv_x = MV1.getHor();
 					int mv_y = MV1.getVer();
@@ -4547,7 +4595,7 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 				}
 				}
 
-				if (((yP >= 2 * WH&&yP < 4 * WH) || (xP <2 * WH&&yP >= 4 * WH)) && eDir == MD_ABOVE_RIGHT)
+				if (((yP >= 2 * WH&&yP < 4 * WH&&xP<8 * WH) || (xP <2 * WH&&yP >= 4 * WH&&yP<6*WH)) && eDir == MD_ABOVE_RIGHT)
 				{
 					int mv_x = MV1.getHor();
 					int mv_y = MV1.getVer();
@@ -4606,7 +4654,7 @@ void  TComDataCU::xAddMVPCandWithScaling_HF(AMVPInfo &info, const RefPicList eRe
 				}
 
 				
-				if (((yP == 2 * WH&&xP) || (yP == 4 * WH&&xP < 2 * WH&&xP) || (xP % (2 * WH) == 0 && xP&&yP>2 * WH&&yP<4 * WH) || (!xP && yP >= 4 * WH)) && eDir == MD_ABOVE_LEFT)
+				if (((yP == 2 * WH&&xP&&xP<8*WH) || (yP == 4 * WH&&xP < 2 * WH&&xP) || (xP % (2 * WH) == 0 && xP&&yP>2 * WH&&yP<4 * WH&&xP<8*WH) || (!xP && yP >= 4 * WH&&yP<6*WH)) && eDir == MD_ABOVE_LEFT)
 				{
 					int mv_x = MV1.getHor();
 					int mv_y = MV1.getVer();

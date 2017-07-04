@@ -568,6 +568,8 @@ Void TComPrediction::xPredInterUni ( TComDataCU* pcCU, UInt uiPartAddr, Int iWid
 {
   Int         iRefIdx     = pcCU->getCUMvField( eRefPicList )->getRefIdx( uiPartAddr );           assert (iRefIdx >= 0);
   TComMv      cMv         = pcCU->getCUMvField( eRefPicList )->getMv( uiPartAddr );
+
+
   pcCU->clipMv(cMv);
   //Bool bmergeflag = pcCU->getMergeFlag(pcCU->getZorderIdxInCtu() + uiPartAddr);
 
