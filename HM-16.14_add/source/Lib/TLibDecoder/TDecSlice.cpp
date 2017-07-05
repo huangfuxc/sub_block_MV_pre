@@ -69,9 +69,9 @@ Void TDecSlice::init(TDecEntropy* pcEntropyDecoder, TDecCu* pcCuDecoder)
 Void TDecSlice::decompressSlice(TComInputBitstream** ppcSubstreams, TComPic* pcPic, TDecSbac* pcSbacDecoder)
 {
 #if AMVP_DEBUG	
-	FILE *Mvv0;
+	/*FILE *Mvv0;
 	Mvv0 = fopen("E:\\github\\sub_block_MV_pre\\HM-16.14_add\\cfg\\Mvv1.txt", "a");
-	int count = 0;
+	int count = 0;*/
 #endif
   TComSlice* pcSlice                 = pcPic->getSlice(pcPic->getCurrSliceIdx());
 
@@ -348,7 +348,7 @@ Void TDecSlice::decompressSlice(TComInputBitstream** ppcSubstreams, TComPic* pcP
     m_lastSliceSegmentEndContextState.loadContexts( pcSbacDecoder );//ctx end of dep.slice
   }
 #if AMVP_DEBUG
-  fclose(Mvv0);
+  /*fclose(Mvv0);*/
 #endif
 }
 

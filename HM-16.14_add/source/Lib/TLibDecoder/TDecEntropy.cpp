@@ -252,8 +252,8 @@ Void TDecEntropy::decodePUWise( TComDataCU* pcCU, UInt uiAbsPartIdx, UInt uiDept
 		  if (cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getPos())
 		  {
 #if HF_DEBUG
-			  cout << endl;
-			  cout << "xuanzhogmerge" << endl<<endl<<endl;
+			 /* cout << endl;
+			  cout << "xuanzhogmerge" << endl<<endl<<endl;*/
 #endif
 			  TComMv*  pcMv;
 			  pcMv = pcSubCU->getCUMvField(RefPicList(uiRefListIdx))->getMv();//一个CU内部的所有MV的起点指针；即为指向左上角位置的MV。
@@ -429,8 +429,8 @@ Void TDecEntropy::decodeMVPIdxPU( TComDataCU* pcSubCU, UInt uiPartAddr, UInt uiD
   {
 
 #if AMVP_DEBUG
-	  cout << endl;
-	  cout << "xuanzhong__" << "  pos:  " << cMv.getPos() <<"  mvx: "<<cMv.getHor()<<"   mvy: "<<cMv.getVer()<< endl;
+	/*  cout << endl;
+	  cout << "xuanzhong__" << "  pos:  " << cMv.getPos() <<"  mvx: "<<cMv.getHor()<<"   mvy: "<<cMv.getVer()<< endl;*/
 #endif
 	  int xP, yP, nPSW, nPSH;
 	  UInt CUPartAddr;

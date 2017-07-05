@@ -701,9 +701,9 @@ Void TEncSlice::compressSlice( TComPic* pcPic, const Bool bCompressEntireSlice, 
   //   effectively disabling the slice-segment-mode.
 
 #if AMVP_DEBUG	
-	FILE *Mvv0;
+	/*FILE *Mvv0;
 	Mvv0 = fopen("E:\\github\\sub_block_MV_pre\\HM-16.14_add\\cfg\\Mvv0.txt", "a");
-	int count = 0;
+	int count = 0;*/
 #endif
   UInt   startCtuTsAddr;
   UInt   boundingCtuTsAddr;
@@ -1079,7 +1079,7 @@ Void TEncSlice::compressSlice( TComPic* pcPic, const Bool bCompressEntireSlice, 
   //}
 
 #if AMVP_DEBUG	
-  fclose(Mvv0);
+ /* fclose(Mvv0);*/
 #endif
 }
 

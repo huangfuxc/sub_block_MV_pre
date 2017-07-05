@@ -307,8 +307,8 @@ Void TDecCu::xDecodeCU( TComDataCU*const pcCU, const UInt uiAbsPartIdx, const UI
 			pcMv[uiPartAddr].setPos(cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getPos());//为了使得在运动补偿时可以判断是否划分子块。
 
 #if HF_DEBUG
-			cout << endl;
-			cout << "xuanzhong"<<endl<<endl<<endl;
+		/*	cout << endl;
+			cout << "xuanzhong"<<endl<<endl<<endl;*/
 #endif
 
 
