@@ -104,7 +104,7 @@
 #define HUANGFU_20170606                                   1//search in side
 #define AMVP_MATCH                                         1//for the decoder and encoder matched in AMVP
 #define HF_DEBUG                                           0
-#define AMVP_DEBUG                                         0//debug for AMVP
+#define AMVP_DEBUG                                         1//debug for AMVP
 #define PROJECTION                                         0
 // ====================================================================================================================
 

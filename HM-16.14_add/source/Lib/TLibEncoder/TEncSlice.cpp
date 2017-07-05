@@ -701,9 +701,9 @@ Void TEncSlice::compressSlice( TComPic* pcPic, const Bool bCompressEntireSlice, 
   //   effectively disabling the slice-segment-mode.
 
 #if AMVP_DEBUG	
-	/*FILE *Mvv0;
-	Mvv0 = fopen("E:\\github\\sub_block_MV_pre\\HM-16.14_add\\cfg\\Mvv0.txt", "a");
-	int count = 0;*/
+	FILE *Mvv0;
+	Mvv0 = fopen("Mvv0.txt", "a");
+	int count = 0;
 #endif
   UInt   startCtuTsAddr;
   UInt   boundingCtuTsAddr;
@@ -970,91 +970,93 @@ Void TEncSlice::compressSlice( TComPic* pcPic, const Bool bCompressEntireSlice, 
 #if AMVP_DEBUG
 
 
-	//TComMv MV0, MV1,MV2,MV3;
-	//if (pCtu->getSlice()->getPOC() ==5)
-	//{
-	////	if (pCtu->getCtuRsAddr() == 41)
-	////	{
-	////		TComDataCU CU0, CU1;
-	////		TComDataCU*m_ppcCU0 = &CU0;
-	////		TComDataCU*m_ppcCU1 = &CU1;
-	////	//	m_ppcCU0->initSubCU(pCtu, 0, 2, 22);
-	////		m_ppcCU0->copyInterPredInfoFrom(pCtu, 0, REF_PIC_LIST_0);
-	////		m_ppcCU0->copyInterPredInfoFrom(pCtu, 0, REF_PIC_LIST_1);//此处的uiAbsPartIdx是真正的一个CTU内部的Zorder顺序；
-	////		//m_ppcCU1->copyInterPredInfoFrom(pCtu, 16, REF_PIC_LIST_0);
-	////		//m_ppcCU1->copyInterPredInfoFrom(pCtu, 16, REF_PIC_LIST_1);//此处的uiAbsPartIdx是真正的一个CTU内部的Zorder顺序；
-	////		//UInt uiAbsPartIdx = 0;
-	////		//Int iWidth = 0;
-	////		//Int iHeight = 0;
-	////		//m_ppcCU0->getPartIndexAndSize(0, uiAbsPartIdx, iWidth, iHeight);
-	////		//TComMvField cMvFieldNeighbours[MRG_MAX_NUM_CANDS << 1]; // double length for mv of both lists
-	////		//UChar uhInterDirNeighbours[MRG_MAX_NUM_CANDS];
-	////		//Int numValidMergeCand = 0;
-	////		int iRefIdx = -1;
-	////		//m_ppcCU0->getInterMergeCandidates(uiAbsPartIdx, 0, cMvFieldNeighbours, uhInterDirNeighbours, numValidMergeCand);
-	////		//for (int uiRefListIdx = 0; uiRefListIdx < 2; uiRefListIdx++)
-	////		//{
-	////		//	/*if (!m_ppcCU0->getZorderIdxInCtu())
-	////		//	{
-	////		//		for (int i = 0; i < numValidMergeCand; i++)
-	////		//			cout << " merge:  " << cMvFieldNeighbours[2 * i + uiRefListIdx].getMv().getHor() << "  " << cMvFieldNeighbours[2 * i + uiRefListIdx].getMv().getVer() << "  " << cMvFieldNeighbours[2 * i + uiRefListIdx].getMv().getPos() << endl;
-	////		//	}
-	////		//	*/
-	////		//	TComCUMvField* pcSubCUMvField = m_ppcCU0->getCUMvField(RefPicList(uiRefListIdx));
-	////		//	AMVPInfo* pAMVPInfo = pcSubCUMvField->getAMVPInfo();
-	////		//	iRefIdx = pcSubCUMvField->getRefIdx(0);
-	////		//	m_ppcCU0->fillMvpCand(0, 0, RefPicList(uiRefListIdx), iRefIdx, pAMVPInfo);
-	////		//	if (m_ppcCU0->getZorderIdxInCtu() == 0 )
-	////		//	{
-	////		//		for (int i = 0; i < pAMVPInfo->iN; i++)
-	////		//		{
-	////		//			cout << pAMVPInfo->m_acMvCand[i].getHor() << " " << pAMVPInfo->m_acMvCand[i].getVer() << endl;
-	////		//		}
-	////		//	}
-	////		//}
-	////	}
-	////		
-	//	for (int i = 0; i < 256; i++)
+	TComMv MV0, MV1,MV2,MV3;
+	if (pCtu->getSlice()->getPOC() ==4)
+	{
+	//	if (pCtu->getCtuRsAddr() == 41)
 	//	{
-	//		MV0 = pCtu->getCUMvField(REF_PIC_LIST_0)->getMv(g_auiRasterToZscan[i]);
-	//		MV1 = pCtu->getCUMvField(REF_PIC_LIST_1)->getMv(g_auiRasterToZscan[i]);
-	//		MV2 = pCtu->getCUMvField(REF_PIC_LIST_0)->getMvd(g_auiRasterToZscan[i]);
-	//		MV3 = pCtu->getCUMvField(REF_PIC_LIST_1)->getMvd(g_auiRasterToZscan[i]);
-	//		count++;
-	//		/*if (count == 11665 || count == 11666)
-	//		{
-	//			fprintf(Mvv0, "%4d", pCtu->getMVPIdx(REF_PIC_LIST_0, g_auiRasterToZscan[i]));
-	//		}*/
-	//			//if (count == 9281)
-	//			//{
-	//			//fprintf(Mvv0, "%4d", pCtu->getMergeIndex(g_auiRasterToZscan[i]));
-	//			//}
-	//		//if (count == 10497)
-	//		//		{
-	//		//			//fprintf(Mvv0, "%4d", pCtu->getMergeFlag(g_auiRasterToZscan[i]));
-	//		//			fprintf(Mvv0, "%4d", pCtu->getPartitionSize(g_auiRasterToZscan[i]));
-	//		//			fprintf(Mvv0, "%4d", pCtu->getSlice()->getRefPOC(REF_PIC_LIST_0, pCtu->getCUMvField(REF_PIC_LIST_0)->getRefIdx(g_auiRasterToZscan[i])));
-	//		//if (count == 7169)
+	//		TComDataCU CU0, CU1;
+	//		TComDataCU*m_ppcCU0 = &CU0;
+	//		TComDataCU*m_ppcCU1 = &CU1;
+	//	//	m_ppcCU0->initSubCU(pCtu, 0, 2, 22);
+	//		m_ppcCU0->copyInterPredInfoFrom(pCtu, 0, REF_PIC_LIST_0);
+	//		m_ppcCU0->copyInterPredInfoFrom(pCtu, 0, REF_PIC_LIST_1);//此处的uiAbsPartIdx是真正的一个CTU内部的Zorder顺序；
+	//		//m_ppcCU1->copyInterPredInfoFrom(pCtu, 16, REF_PIC_LIST_0);
+	//		//m_ppcCU1->copyInterPredInfoFrom(pCtu, 16, REF_PIC_LIST_1);//此处的uiAbsPartIdx是真正的一个CTU内部的Zorder顺序；
+	//		//UInt uiAbsPartIdx = 0;
+	//		//Int iWidth = 0;
+	//		//Int iHeight = 0;
+	//		//m_ppcCU0->getPartIndexAndSize(0, uiAbsPartIdx, iWidth, iHeight);
+	//		//TComMvField cMvFieldNeighbours[MRG_MAX_NUM_CANDS << 1]; // double length for mv of both lists
+	//		//UChar uhInterDirNeighbours[MRG_MAX_NUM_CANDS];
+	//		//Int numValidMergeCand = 0;
+	//		int iRefIdx = -1;
+	//		//m_ppcCU0->getInterMergeCandidates(uiAbsPartIdx, 0, cMvFieldNeighbours, uhInterDirNeighbours, numValidMergeCand);
+	//		//for (int uiRefListIdx = 0; uiRefListIdx < 2; uiRefListIdx++)
 	//		//{
-	//		//	fprintf(Mvv0, "%4d", pCtu->getMVPIdx(REF_PIC_LIST_0, g_auiRasterToZscan[i]));
-	//		//	fprintf(Mvv0, "%4d", pCtu->getSlice()->getRefPOC(REF_PIC_LIST_0, pCtu->getCUMvField(REF_PIC_LIST_0)->getRefIdx(g_auiRasterToZscan[i])));
-	//		//}
-	//		////		}
-	//		fprintf(Mvv0, "%4d%4d%4d%4d", MV0.getHor(), MV0.getVer(), MV2.getHor(), MV2.getVer());//水平与垂直方向上的位移
-	//		//		//fprintf(Mvv0, "%4d%4d", MV2.getHor(), MV2.getVer());//水平与垂直方向上的位移
-	//		//		if (count == 10497)
-	//		//		{
-	//		//			fprintf(Mvv0, "%4d", pCtu->getSlice()->getRefPOC(REF_PIC_LIST_1, pCtu->getCUMvField(REF_PIC_LIST_1)->getRefIdx(g_auiRasterToZscan[i])));
-	//		//			fprintf(Mvv0, "%4d", pCtu->getMVPIdx(REF_PIC_LIST_1, g_auiRasterToZscan[i]));
-	//		//		}
-	//		//if (count == 7169)
-	//		//	fprintf(Mvv0, "%4d", pCtu->getMVPIdx(REF_PIC_LIST_1, g_auiRasterToZscan[i]));
-	//		fprintf(Mvv0, "%4d%4d%4d%4d\n", MV1.getHor(), MV1.getVer(), MV3.getHor(), MV3.getVer());//水平与垂直方向上的位移
-	//		//		//fprintf(Mvv0, "%4d%4d\n", MV3.getHor(), MV3.getVer());//水平与垂直方向上的位移
+	//		//	/*if (!m_ppcCU0->getZorderIdxInCtu())
+	//		//	{
+	//		//		for (int i = 0; i < numValidMergeCand; i++)
+	//		//			cout << " merge:  " << cMvFieldNeighbours[2 * i + uiRefListIdx].getMv().getHor() << "  " << cMvFieldNeighbours[2 * i + uiRefListIdx].getMv().getVer() << "  " << cMvFieldNeighbours[2 * i + uiRefListIdx].getMv().getPos() << endl;
 	//		//	}
-	//		//	
+	//		//	*/
+	//		//	TComCUMvField* pcSubCUMvField = m_ppcCU0->getCUMvField(RefPicList(uiRefListIdx));
+	//		//	AMVPInfo* pAMVPInfo = pcSubCUMvField->getAMVPInfo();
+	//		//	iRefIdx = pcSubCUMvField->getRefIdx(0);
+	//		//	m_ppcCU0->fillMvpCand(0, 0, RefPicList(uiRefListIdx), iRefIdx, pAMVPInfo);
+	//		//	if (m_ppcCU0->getZorderIdxInCtu() == 0 )
+	//		//	{
+	//		//		for (int i = 0; i < pAMVPInfo->iN; i++)
+	//		//		{
+	//		//			cout << pAMVPInfo->m_acMvCand[i].getHor() << " " << pAMVPInfo->m_acMvCand[i].getVer() << endl;
+	//		//		}
+	//		//	}
+	//		//}
 	//	}
-	//}
+	//		
+		for (int i = 0; i < 256; i++)
+		{
+			MV0 = pCtu->getCUMvField(REF_PIC_LIST_0)->getMv(g_auiRasterToZscan[i]);
+			MV1 = pCtu->getCUMvField(REF_PIC_LIST_1)->getMv(g_auiRasterToZscan[i]);
+			MV2 = pCtu->getCUMvField(REF_PIC_LIST_0)->getMvd(g_auiRasterToZscan[i]);
+			MV3 = pCtu->getCUMvField(REF_PIC_LIST_1)->getMvd(g_auiRasterToZscan[i]);
+			count++;
+			fprintf(Mvv0, "%4d%4d%4d%4d", MV0.getHor(), MV0.getVer(), MV2.getHor(), MV2.getVer());
+			fprintf(Mvv0, "%4d%4d%4d%4d\n", MV1.getHor(), MV1.getVer(), MV3.getHor(), MV3.getVer());
+			/*if (count == 11665 || count == 11666)
+			{
+				fprintf(Mvv0, "%4d", pCtu->getMVPIdx(REF_PIC_LIST_0, g_auiRasterToZscan[i]));
+			}*/
+				//if (count == 9281)
+				//{
+				//fprintf(Mvv0, "%4d", pCtu->getMergeIndex(g_auiRasterToZscan[i]));
+				//}
+			//if (count == 10497)
+			//		{
+			//			//fprintf(Mvv0, "%4d", pCtu->getMergeFlag(g_auiRasterToZscan[i]));
+			//			fprintf(Mvv0, "%4d", pCtu->getPartitionSize(g_auiRasterToZscan[i]));
+			//			fprintf(Mvv0, "%4d", pCtu->getSlice()->getRefPOC(REF_PIC_LIST_0, pCtu->getCUMvField(REF_PIC_LIST_0)->getRefIdx(g_auiRasterToZscan[i])));
+			//if (count == 7169)
+			//{
+			//	fprintf(Mvv0, "%4d", pCtu->getMVPIdx(REF_PIC_LIST_0, g_auiRasterToZscan[i]));
+			//	fprintf(Mvv0, "%4d", pCtu->getSlice()->getRefPOC(REF_PIC_LIST_0, pCtu->getCUMvField(REF_PIC_LIST_0)->getRefIdx(g_auiRasterToZscan[i])));
+			//}
+			////		}
+			//水平与垂直方向上的位移
+			//		//fprintf(Mvv0, "%4d%4d", MV2.getHor(), MV2.getVer());//水平与垂直方向上的位移
+			//		if (count == 10497)
+			//		{
+			//			fprintf(Mvv0, "%4d", pCtu->getSlice()->getRefPOC(REF_PIC_LIST_1, pCtu->getCUMvField(REF_PIC_LIST_1)->getRefIdx(g_auiRasterToZscan[i])));
+			//			fprintf(Mvv0, "%4d", pCtu->getMVPIdx(REF_PIC_LIST_1, g_auiRasterToZscan[i]));
+			//		}
+			//if (count == 7169)
+			//	fprintf(Mvv0, "%4d", pCtu->getMVPIdx(REF_PIC_LIST_1, g_auiRasterToZscan[i]));
+			//水平与垂直方向上的位移
+			//		//fprintf(Mvv0, "%4d%4d\n", MV3.getHor(), MV3.getVer());//水平与垂直方向上的位移
+			//	}
+			//	
+		}
+	}
 #endif
   }
 
@@ -1079,7 +1081,7 @@ Void TEncSlice::compressSlice( TComPic* pcPic, const Bool bCompressEntireSlice, 
   //}
 
 #if AMVP_DEBUG	
- /* fclose(Mvv0);*/
+  fclose(Mvv0);
 #endif
 }
 

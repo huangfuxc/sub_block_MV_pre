@@ -3266,11 +3266,11 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 				else
 				{
 					//else
-					Int MvpIdx, bestBiPMvpL1temp, bestBiPRefIdxL1temp;
+					Int MvpIdx;
 					TComMv  Pred;
 					TComMv  MV;
 					Distortion   CostTemp = std::numeric_limits<Distortion>::max();
-					Distortion  bestBiPDistTemp = std::numeric_limits<Distortion>::max();
+//					Distortion  bestBiPDistTemp = std::numeric_limits<Distortion>::max();
 					UInt uiBitsTemp_0;
 						//每个都进行相应的对比
 						for (int i = 0; i < pcAMVPInfo->iN; i++)
@@ -4255,7 +4255,6 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 			if (!cMv[1].getPos())
 			{
 				pcCU->getCUMvField(REF_PIC_LIST_1)->setAllMv(cMv[1], ePartSize, uiPartAddr, 0, iPartIdx);
-
 				TempMv = cMv[1] - cMvPred[1][iRefIdx[1]];
 				pcCU->getCUMvField(REF_PIC_LIST_1)->setAllMvd(TempMv, ePartSize, uiPartAddr, 0, iPartIdx);
 
