@@ -281,6 +281,13 @@ Void TDecCu::xDecodeCU( TComDataCU*const pcCU, const UInt uiAbsPartIdx, const UI
 	m_ppcCU[uiDepth]->getPartPosition(0, xP, yP, nPSW, nPSH);//获得当前PU的位置以及左上角的坐标位置。
 	m_ppcCU[uiDepth]->getPartIndexAndSize(0, uiPartAddr, nPSW, nPSH);//获取在CTU内部的地址，参数为当前PU的idx;
 	CUPartAddr = m_ppcCU[uiDepth]->getZorderIdxInCtu();//CU 左上角位置在CTU中的Z扫描顺序，可以参考之前setallMV的函数来进行修改。
+	if (xP == 768 && yP == 480 && nPSW == 32 && nPSH ==32)
+	{
+
+		int temp = 0;
+	}
+
+
 #endif
     for( UInt ui = 0; ui < m_ppcCU[uiDepth]->getSlice()->getMaxNumMergeCand(); ++ui )
     {
@@ -300,6 +307,33 @@ Void TDecCu::xDecodeCU( TComDataCU*const pcCU, const UInt uiAbsPartIdx, const UI
         pcCU->setMVPNumSubParts( 0, RefPicList( uiRefListIdx ), uiAbsPartIdx, 0, uiDepth);
         pcCU->getCUMvField( RefPicList( uiRefListIdx ) )->setAllMvd( cTmpMv, SIZE_2Nx2N, uiAbsPartIdx, uiDepth );
 #if HUANGFU_20170601
+		if (cMvFieldNeighbours[2 * uiMergeIndex + 1].getRefIdx() == -1 && cMvFieldNeighbours[2 * uiMergeIndex].getRefIdx() == -1)
+		{
+
+			cout << "skipcuowu   xP   " << xP << "  yP   " << yP << "  nPSW   " << nPSW << "  nPSH  " << nPSH << endl;
+			//system("pause");
+		}
+
+#if DISMATCH
+		//if (pcCU->getSlice()->getPOC() == 4 && !uiRefListIdx&&cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getHor() == 2 && cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getVer() == -2)
+		//{
+		//	cout << " xP: " << xP << " yP: " << yP << " nPSW: " << nPSW << " nPSH: " << nPSH << "  eRefList: " << uiRefListIdx << " POS: " << cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getPos() << endl;
+		//	system("pause");
+		//
+		//}
+		if (pcCU->getSlice()->getPOC() == 4 && xP == 3536 && yP == 1576 && uiRefListIdx)
+		{
+			cout << "HOR:  " << cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getHor() << "  VER:  " << cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getVer() << endl;
+			cout << "3536" << endl;
+		}
+
+		if (pcCU->getSlice()->getPOC() == 4 && xP == 3544 && yP == 1576 && uiRefListIdx)
+		{
+			cout << "HOR:  " << cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getHor() << "  VER:  " << cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getVer() << endl;
+			cout << "3544" << endl;
+		}
+
+#endif
 		if (cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getPos())
 		{
 			TComMv*  pcMv;

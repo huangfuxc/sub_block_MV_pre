@@ -615,7 +615,7 @@ Void TComPrediction::xPredInterUni ( TComDataCU* pcCU, UInt uiPartAddr, Int iWid
 				  {
 					  cMv = pcCU->getCUMvField(eRefPicList)->getMv(g_auiRasterToZscan[g_auiZscanToRaster[uiPartAddr + pcCU->getZorderIdxInCtu()] + j + 16 * i] - pcCU->getZorderIdxInCtu());
 					  pcCU->clipMv(cMv);
-					  int uiPartAddr_ = g_auiRasterToZscan[g_auiZscanToRaster[uiPartAddr + pcCU->getZorderIdxInCtu()] + j + 16 * i] - pcCU->getZorderIdxInCtu();
+					  UInt uiPartAddr_ = g_auiRasterToZscan[g_auiZscanToRaster[uiPartAddr + pcCU->getZorderIdxInCtu()] + j + 16 * i] - pcCU->getZorderIdxInCtu();
 
 #if ZhengRuidi_20170422
 					  xPredInterBlk_Top(compID, pcCU, pcCU->getSlice()->getRefPic(eRefPicList, iRefIdx)->getPicYuvRec(), uiPartAddr_, &cMv, iWidth_, iHeight_, pcYuvPred, bi, pcCU->getSlice()->getSPS()->getBitDepth(toChannelType(compID)));
@@ -637,7 +637,7 @@ Void TComPrediction::xPredInterUni ( TComDataCU* pcCU, UInt uiPartAddr, Int iWid
 					  {
 						  cMv = pcCU->getCUMvField(eRefPicList)->getMv(g_auiRasterToZscan[g_auiZscanToRaster[uiPartAddr + pcCU->getZorderIdxInCtu()] + j + 16 * i] - pcCU->getZorderIdxInCtu());
 						  pcCU->clipMv(cMv);
-						  int uiPartAddr_ = g_auiRasterToZscan[g_auiZscanToRaster[uiPartAddr + pcCU->getZorderIdxInCtu()] + j + 16 * i] - pcCU->getZorderIdxInCtu();
+						  UInt uiPartAddr_ = g_auiRasterToZscan[g_auiZscanToRaster[uiPartAddr + pcCU->getZorderIdxInCtu()] + j + 16 * i] - pcCU->getZorderIdxInCtu();
 
 #if ZhengRuidi_20170422
 						  xPredInterBlk_Top(compID, pcCU, pcCU->getSlice()->getRefPic(eRefPicList, iRefIdx)->getPicYuvRec(), uiPartAddr_, &cMv, iWidth_, iHeight_, pcYuvPred, bi, pcCU->getSlice()->getSPS()->getBitDepth(toChannelType(compID)));

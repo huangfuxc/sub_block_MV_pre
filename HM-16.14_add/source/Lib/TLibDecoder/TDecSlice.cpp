@@ -72,6 +72,23 @@ Void TDecSlice::decompressSlice(TComInputBitstream** ppcSubstreams, TComPic* pcP
 	FILE *Mvv0;
 	Mvv0 = fopen("Mvv1.txt", "a");
 	int count = 0;
+	/*static int a = 1;
+	if (a)
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			for (int j = 0; j < 16; j++)
+			{
+
+				printf("%4d", g_auiRasterToZscan[i * 16 + j]);
+				
+			}
+			printf("\n");
+		}
+		a = 0;
+	}
+*/
+
 #endif
   TComSlice* pcSlice                 = pcPic->getSlice(pcPic->getCurrSliceIdx());
 
@@ -302,6 +319,8 @@ Void TDecSlice::decompressSlice(TComInputBitstream** ppcSubstreams, TComPic* pcP
 			//	}
 			//	
 		}
+		
+
 	}
 #endif
 

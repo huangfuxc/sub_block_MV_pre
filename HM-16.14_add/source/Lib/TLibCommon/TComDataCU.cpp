@@ -2554,7 +2554,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
                        pcCUAboveRight->isDiffMER(xP+nPSW, yP-1, xP, yP) &&
                        pcCUAboveRight->isInter( uiAboveRightPartIdx );
 #if HUANGFU_M
-  if ((yP == 2 * WH&&xP<8*WH) || (xP + nPSW == 8 * WH&&yP>2 * WH&&yP<4 * WH) || (xP + nPSW == 2 * WH&&yP>4 * WH&&yP<6 * WH))
+  if ((yP == 2 * WH&&xP<8*WH&&xP>=2*WH) || (xP + nPSW == 8 * WH&&yP>2 * WH&&yP<4 * WH) || (xP + nPSW == 2 * WH&&yP>4 * WH&&yP<6 * WH))
   {
 #if  HUANGFU_2017_04_27  
 	
@@ -2621,7 +2621,8 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
 #endif
     }
 #if HUANGFU_M
-	if ((yP >= 2 * WH&&yP<4 * WH&&xP<8*WH) || (xP<2 * WH&&yP >= 4 * WH&&yP<6*WH))
+	if ((yP == 2 * WH&&xP<8 * WH) || (xP + nPSW == 8 * WH&&yP>2 * WH&&yP<4 * WH) ||(yP==4*WH&&xP<2*WH)|| (xP + nPSW == 2 * WH&&yP>4 * WH&&yP<6 * WH))
+	//if ((yP >= 2 * WH&&yP<4 * WH&&xP<8*WH) || (xP<2 * WH&&yP >= 4 * WH&&yP<6*WH))
 	{
 		TComMv MV1 = pcMvFieldNeighbours[iCount << 1].getMv();
 		int mv_x = MV1.getHor();
@@ -2654,7 +2655,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
 		int ref_idx = pcMvFieldNeighbours[iCount << 1].getRefIdx();
 		if ( ref_idx != NOT_VALID)
 		{
-			if (yP == 2 * WH || yP == 4 * WH)
+			if (yP == 2 * WH || (yP == 4 * WH&&xP<2 * WH))
 			{
 #if  HUANGFU_2017_04_27
 				Aboveright_sameface = 1;
@@ -2712,7 +2713,7 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
 			ref_idx = pcMvFieldNeighbours[(iCount << 1) + 1].getRefIdx();
 			if (ref_idx != NOT_VALID)
 			{
-				if (yP == 2 * WH || yP == 4 * WH)
+				if (yP == 2 * WH || (yP == 4 * WH&&xP<2 * WH))
 				{
 					double mv_x_re = mv_x;
 					double mv_y_re = mv_y;
@@ -2730,11 +2731,8 @@ Void TComDataCU::getInterMergeCandidates( UInt uiAbsPartIdx, UInt uiPUIdx, TComM
 					MV1.setVer(mv_y_re);
 					MV1.setHor(mv_x_re);
 					MV1.setPos(3);
-
 					pcMvFieldNeighbours[(iCount << 1) + 1].setMvField(MV1, ref_idx);
 				}
-
-
 			}
 		}
 
@@ -3414,7 +3412,7 @@ Void TComDataCU::fillMvpCand(const UInt partIdx, const UInt partAddr, const RefP
 		const TComDataCU* tempCU = NULL;
 		if ((!xP && yP >= (4 * WH)&&yP<6*WH) || (yP + nPSH == 6 * WH&&xP<2 * WH&&xP))
 		{
-
+			isScaledFlagLX = false;
 			if (yP + nPSH == 6 * WH&&xP<2 * WH&&xP)
 			{
 
@@ -3605,6 +3603,7 @@ Void TComDataCU::fillMvpCand(const UInt partIdx, const UInt partAddr, const RefP
 		}
 	}
 #endif
+
 	if ( pInfo->iN == 2 )
 	{
 		if ( pInfo->m_acMvCand[ 0 ] == pInfo->m_acMvCand[ 1 ] )

@@ -216,6 +216,11 @@ Void TDecEntropy::decodePUWise( TComDataCU* pcCU, UInt uiAbsPartIdx, UInt uiDept
 	  CUPartAddr = pcSubCU->getZorderIdxInCtu();//CU 左上角位置在CTU中的Z扫描顺序，可以参考之前setallMV的函数来进行修改。
 
 #endif
+#if HUANGFU_20170601
+	  int xP, yP, nPSW, nPSH;
+	  pcSubCU->getPartPosition(uiPartIdx, xP, yP, nPSW, nPSH);//获得当前PU的位置以及左上角的坐标位置。
+	  pcSubCU->getPartIndexAndSize(uiPartIdx, uiPartAddr, nPSW, nPSH);//获取在CTU内部的地址，参数为当前PU的idx;
+#endif
       const UInt uiMergeIndex = pcCU->getMergeIndex(uiSubPartIdx);
       if ( pcCU->getSlice()->getPPS()->getLog2ParallelMergeLevelMinus2() && ePartSize != SIZE_2Nx2N && pcSubCU->getWidth( 0 ) <= 8 )
       {
@@ -233,11 +238,7 @@ Void TDecEntropy::decodePUWise( TComDataCU* pcCU, UInt uiAbsPartIdx, UInt uiDept
       }
 
       pcCU->setInterDirSubParts( uhInterDirNeighbours[uiMergeIndex], uiSubPartIdx, uiPartIdx, uiDepth );
-#if HUANGFU_20170601
-	  int xP, yP, nPSW, nPSH;
-	  pcSubCU->getPartPosition(uiPartIdx, xP, yP, nPSW, nPSH);//获得当前PU的位置以及左上角的坐标位置。
-	  pcSubCU->getPartIndexAndSize(uiPartIdx, uiPartAddr, nPSW, nPSH);//获取在CTU内部的地址，参数为当前PU的idx;
-#endif
+
       TComMv cTmpMv( 0, 0 );
 
       for ( UInt uiRefListIdx = 0; uiRefListIdx < 2; uiRefListIdx++ )
@@ -249,6 +250,11 @@ Void TDecEntropy::decodePUWise( TComDataCU* pcCU, UInt uiAbsPartIdx, UInt uiDept
           pcCU->getCUMvField( RefPicList( uiRefListIdx ) )->setAllMvd( cTmpMv, ePartSize, uiSubPartIdx, uiDepth, uiPartIdx );
 
 #if HUANGFU_20170601
+		  if (cMvFieldNeighbours[2 * uiMergeIndex + 1].getRefIdx() == -1 && cMvFieldNeighbours[2 * uiMergeIndex].getRefIdx() == -1)
+		  {
+			  cout << "mergecuowu   xP   " << xP << "  yP   " << yP << "  nPSW   " << nPSW << "  nPSH  " << nPSH << endl;
+			  //system("pause");
+		  }
 		  if (cMvFieldNeighbours[2 * uiMergeIndex + uiRefListIdx].getMv().getPos())
 		  {
 #if HF_DEBUG
@@ -405,25 +411,31 @@ Void TDecEntropy::decodeMVPIdxPU( TComDataCU* pcSubCU, UInt uiPartAddr, UInt uiD
 #if AMVP_MATCH
  
 #if AMVP_DEBUG
- // int xP, yP, nPSW, nPSH;
- // UInt CUPartAddr;
- // pcSubCU->getPartPosition(uiPartIdx, xP, yP, nPSW, nPSH);//获得当前PU的位置以及左上角的坐标位置。
- // CUPartAddr = pcSubCU->getZorderIdxInCtu();//CU 左上角位置在CTU中的Z扫描顺序，可以参考之前setallMV的函数来进行修改。
- // if (pcSubCU->getSlice()->getPOC() ==5)
- // {
-	// if (cMvd.getHor() == 1 && cMvd.getVer() == -5)
-	//	  cout << " xP: " << xP << " yP: " << yP << " nPSW: " << nPSW << " nPSH: " << nPSH << endl;
-	//if (xP == 128 && yP == 132 && nPSW == 8 && nPSH == 4)
-	//  {
-	//	  cout << " eRefList:  " << eRefList << endl;
-	//	  cout << "MVP: " << iMVPIdx << endl;
-	//	  for (int i = 0; i < pAMVPInfo->iN; i++)
-	//	  {
-	//		  cout << "AMVP: " << i << ":  " << pAMVPInfo->m_acMvCand[i].getHor() << " " << pAMVPInfo->m_acMvCand[i].getVer() << " " << pAMVPInfo->m_acMvCand[i].getPos()<< endl;
-	//	  }
-	//	  cout << "cMv:" << cMv.getHor() << "  " << cMv.getVer() << "  " << cMv.getPos() << endl;
-	//  }
- // }
+  int xP, yP, nPSW, nPSH;
+  UInt CUPartAddr;
+  pcSubCU->getPartPosition(uiPartIdx, xP, yP, nPSW, nPSH);//获得当前PU的位置以及左上角的坐标位置。
+  CUPartAddr = pcSubCU->getZorderIdxInCtu();//CU 左上角位置在CTU中的Z扫描顺序，可以参考之前setallMV的函数来进行修改。
+  if (pcSubCU->getSlice()->getPOC() ==4)
+  {
+	  //if (cMvd.getHor() == -1 && cMvd.getVer() == 1 && cMv.getHor() == -1 && cMv.getVer() == 0 && !eRefList)
+		 // cout << " xP: " << xP << " yP: " << yP << " nPSW: " << nPSW << " nPSH: " << nPSH << "  eRefList: " << eRefList << " POS: " << cMv.getPos()<< endl;
+
+	  //if (cMvd.getHor() == -1 && cMvd.getVer() == 1 && cMv.getHor() == -3 && cMv.getVer() == 2 &&eRefList)
+		 // cout << " xP: " << xP << " yP: " << yP << " nPSW: " << nPSW << " nPSH: " << nPSH << "  eRefList: " << eRefList << " POS: " << cMv.getPos() << endl;
+
+	 /*if (xP+ nPSW== 960 && yP == 1664 && nPSW ==16 && nPSH == 16)
+	  {
+		 cout << " eRefList:  " << eRefList << "   iRefIdx:  "<<iRefIdx<< endl;
+		  cout << "MVP: " << iMVPIdx << endl;
+		  for (int i = 0; i < pAMVPInfo->iN; i++)
+		  {
+			  cout << "AMVP: " << i << ":  " << pAMVPInfo->m_acMvCand[i].getHor() << " " << pAMVPInfo->m_acMvCand[i].getVer() << " " << pAMVPInfo->m_acMvCand[i].getPos()<< endl;
+		  }
+		  cout << "cMv:" << cMv.getHor() << "  " << cMv.getVer() << "  " << cMv.getPos() << endl;
+		  system("pause");
+	  }*/
+
+  }
 #endif
   if (cMv.getPos())
   {

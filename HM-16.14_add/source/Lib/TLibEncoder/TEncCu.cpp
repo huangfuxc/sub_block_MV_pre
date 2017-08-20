@@ -1297,6 +1297,7 @@ Void TEncCu::xCheckRDCostMerge2Nx2N( TComDataCU*& rpcBestCU, TComDataCU*& rpcTem
     uhInterDirNeighbours[ui] = 0;
   }
   UChar uhDepth = rpcTempCU->getDepth( 0 );
+  rpcTempCU->setPredModeSubParts(MODE_INTER, 0, uhDepth); // interprets depth relative to CTU level
   rpcTempCU->setPartSizeSubParts( SIZE_2Nx2N, 0, uhDepth ); // interprets depth relative to CTU level
   rpcTempCU->getInterMergeCandidates( 0, 0, cMvFieldNeighbours,uhInterDirNeighbours, numValidMergeCand );
 
@@ -1383,8 +1384,76 @@ Void TEncCu::xCheckRDCostMerge2Nx2N( TComDataCU*& rpcBestCU, TComDataCU*& rpcTem
 		  // do MC
 		  m_pcPredSearch->motionCompensation ( rpcTempCU, m_ppcPredYuvTemp[uhDepth] );
 
-		  pcMv0[uiPartAddr].setPos(0);//确保当前的PU在给后面的做预测时，保证是position=0.
-		  pcMv1[uiPartAddr].setPos(0);
+#if FILTER4_4
+		  
+		
+		  if (pcMv0[uiPartAddr].getPos() || pcMv1[uiPartAddr].getPos())
+		  {
+			  FILE *srctxt;
+			  srctxt = fopen("srctxt.txt", "a");
+			  FILE *dsttxt;
+			  dsttxt = fopen("dsttxt.txt", "a");
+			  Int     dstStride = m_ppcPredYuvTemp[uhDepth]->getStride(COMPONENT_Y);
+			  Int     srcStride = m_ppcOrigYuv[uhDepth]->getStride(COMPONENT_Y);
+			  Pel*    dst = m_ppcPredYuvTemp[uhDepth]->getAddr(COMPONENT_Y, uiPartAddr);
+			  Pel*    src = m_ppcOrigYuv[uhDepth]->getAddr(COMPONENT_Y);
+
+			  for (int i = 0; i < nPSH; i++)
+			  {
+				  for (int j = 0; j < nPSW; j++)
+				  {
+					  if (j&&j%4==0)
+						  fprintf(dsttxt, "%4d", abs(dst[j] - dst[j-1]));
+
+					 
+					 // printf("%4d", dst[j]);
+				  }
+				  fprintf(dsttxt,"\n");
+				  dst += dstStride;
+			  }
+			  for (int i = 0; i < nPSH/4; i++)
+			  {
+				  for (int j = 0; j < nPSW/4; j++)
+				  {
+					  printf("(%d,", pcMv0[g_auiRasterToZscan[g_auiZscanToRaster[uiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].getHor());
+					  printf("%d)", pcMv0[g_auiRasterToZscan[g_auiZscanToRaster[uiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].getVer());
+				  }
+			  }
+
+			  printf("\n  MV1: \n");
+			  for (int i = 0; i < nPSH; i++)
+			  {
+				  for (int j = 0; j < nPSW; j++)
+				  {
+					  if (j&&j % 4 == 0)
+					  fprintf(srctxt,"%4d", abs(src[j]-src[j-1]));
+					  //printf("(%d,", pcMv1[g_auiRasterToZscan[g_auiZscanToRaster[uiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].getHor());
+					  //printf("%d)", pcMv1[g_auiRasterToZscan[g_auiZscanToRaster[uiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].getVer());
+
+				  }
+				  fprintf(srctxt,"\n");
+				  src += srcStride;
+			  }
+			  for (int i = 0; i < nPSH / 4; i++)
+			  {
+				  for (int j = 0; j < nPSW / 4; j++)
+				  {
+					  printf("(%d,", pcMv1[g_auiRasterToZscan[g_auiZscanToRaster[uiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].getHor());
+					  printf("%d)", pcMv1[g_auiRasterToZscan[g_auiZscanToRaster[uiPartAddr + CUPartAddr] + j + 16 * i] - CUPartAddr].getVer());
+				  }
+			  }
+
+			  fclose(srctxt);
+			  fclose(dsttxt);
+			  system("pause");
+		  }
+#endif
+
+
+
+
+
+	
 
 
 #else
@@ -1402,6 +1471,9 @@ Void TEncCu::xCheckRDCostMerge2Nx2N( TComDataCU*& rpcBestCU, TComDataCU*& rpcTem
                                                      m_ppcResiYuvBest[uhDepth],
                                                      m_ppcRecoYuvTemp[uhDepth],
                                                      (uiNoResidual != 0) DEBUG_STRING_PASS_INTO(tmpStr) );
+
+		  pcMv0[uiPartAddr].setPos(0);//确保当前的PU在给后面的做预测时，保证是position=0.
+		  pcMv1[uiPartAddr].setPos(0);
 
 #if DEBUG_STRING
           DebugInterPredResiReco(tmpStr, *(m_ppcPredYuvTemp[uhDepth]), *(m_ppcResiYuvBest[uhDepth]), *(m_ppcRecoYuvTemp[uhDepth]), DebugStringGetPredModeMask(rpcTempCU->getPredictionMode(0)));

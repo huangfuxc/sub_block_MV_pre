@@ -161,7 +161,7 @@ public:
 
   Bool operator== ( const TComMv& rcMv ) const
   {
-#if HUANGFU_2017_04_27
+#if HUANGFU_2017_04_27_  
 	  return (m_iHor == rcMv.m_iHor && m_iVer == rcMv.m_iVer&&m_iPosition == rcMv.m_iPosition);
 #else 
 	  return (m_iHor==rcMv.m_iHor && m_iVer==rcMv.m_iVer);
@@ -170,7 +170,7 @@ public:
 
   Bool operator!= ( const TComMv& rcMv ) const
   {
-#if HUANGFU_2017_04_27
+#if HUANGFU_2017_04_27_
 	  return (m_iHor!=rcMv.m_iHor || m_iVer!=rcMv.m_iVer||m_iPosition!=rcMv.m_iPosition);
 #else
     return (m_iHor!=rcMv.m_iHor || m_iVer!=rcMv.m_iVer);
